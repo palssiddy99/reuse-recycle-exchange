@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   min-height: 100vh;
   color: #333;
 }
@@ -71,7 +71,7 @@ button:hover {
 }
 
 .send-btn {
-  align-self: flex-start;
+  align-self: center;
   width: auto;
   padding: 10px 20px;
 }
@@ -92,6 +92,7 @@ main {
 h2 {
   margin-top: 30px;
   color: #2c3e50;
+  text-align: center;
 }
 
 /* Items Grid */
@@ -99,6 +100,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  justify-content: center;
 }
 
 .card {
@@ -109,6 +111,8 @@ h2 {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   color: #2c3e50;
   transition: 0.3s;
+  max-width: 280px;
+  text-align: center;
 }
 
 .card:hover {
@@ -134,7 +138,7 @@ h2 {
 #about, #contact {
   margin-top: 40px;
   padding: 20px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
   border-radius: 12px;
   text-align: center;
 }
@@ -202,6 +206,26 @@ form input, form textarea {
   font-size: 22px;
   cursor: pointer;
   color: #555;
+}
+
+/* Cart Items */
+#cart-items {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 /* Footer */
