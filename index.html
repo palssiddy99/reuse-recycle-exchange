@@ -12,12 +12,12 @@
   <header class="site-header">
     <div class="container header-inner">
       <div>
-        <h1>Reuse & Recycle Exchange</h1>
-        <p class="tagline">Give items a second life — exchange on campus 🌍</p>
+        <h1>♻️ Reuse & Recycle Exchange</h1>
+        <p class="tagline">Give items a second life — exchange on campus</p>
       </div>
       <div class="header-actions">
-        <button id="openAddBtn" class="btn primary">Add Item</button>
-        <button id="loadSample" class="btn">Load Sample</button>
+        <button id="openAddBtn" class="btn primary">+ Add Item</button>
+        <button id="loadSample" class="btn">Load Samples</button>
       </div>
     </div>
   </header>
@@ -32,42 +32,43 @@
     <section id="about" class="card">
       <h2>About Us</h2>
       <p>
-        The Reuse & Recycle Exchange is a platform where students and community members 
-        can exchange items they no longer need. Instead of throwing things away, 
-        you can give them to someone who will use them.
+        Welcome to the <b>Reuse & Recycle Exchange</b>, a community-driven platform 
+        where students can donate, exchange, and reuse items instead of throwing them away.  
+        Our goal: <b>reduce waste, save money, and protect the planet 🌍</b>.
       </p>
     </section>
 
     <section id="exchange" class="card">
       <h2>Available Items</h2>
-      <ul id="items-list">
-        <li>📚 Old Textbooks</li>
-        <li>🪑 Study Table</li>
-        <li>💻 Used Laptop</li>
-      </ul>
-      <button class="btn" onclick="addItem()">Add Your Item</button>
 
-      <section class="controls">
-        <input id="searchInput" placeholder="Search items or description..." />
+      <!-- Filters -->
+      <div class="controls">
+        <input id="searchInput" placeholder="🔍 Search items..." />
         <select id="categoryFilter">
-          <option value="">All categories</option>
+          <option value="">All Categories</option>
+          <option value="Books">Books</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Furniture">Furniture</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Other">Other</option>
         </select>
         <select id="sortSelect">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
           <option value="condition">Best Condition</option>
         </select>
-      </section>
+      </div>
 
+      <!-- Grid -->
       <section id="itemsGrid" class="items-grid">
-        <!-- Items injected here -->
+        <!-- Items injected by JS -->
       </section>
     </section>
 
     <section id="contact" class="card">
       <h2>Contact Us</h2>
       <p>Email: recycle.exchange@gmail.com</p>
-      <p>Location: College Campus</p>
+      <p>📍 Location: College Campus</p>
     </section>
   </main>
 
@@ -78,15 +79,15 @@
   </footer>
 
   <!-- Modal for add item -->
-  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div id="modal" class="modal hidden">
     <div class="modal-panel">
       <button id="closeModal" class="modal-close">✕</button>
-      <h2>Add an item</h2>
+      <h2>Add an Item</h2>
       <form id="itemForm">
         <label>Title<input name="title" required /></label>
         <label>Description<textarea name="description" rows="3"></textarea></label>
         <label>Category
-          <select name="category" id="categoryInput" required>
+          <select name="category" required>
             <option value="Books">Books</option>
             <option value="Electronics">Electronics</option>
             <option value="Furniture">Furniture</option>
@@ -102,7 +103,7 @@
         </label>
         <label>Contact (email/phone)<input name="contact" required /></label>
         <label>Image URL (optional)<input name="imageUrl" placeholder="https://..." /></label>
-        <label>Or upload image (optional)<input type="file" accept="image/*" id="imageFile" /></label>
+        <label>Upload Image (optional)<input type="file" accept="image/*" id="imageFile" /></label>
 
         <div class="modal-actions">
           <button type="submit" class="btn primary">Add</button>
