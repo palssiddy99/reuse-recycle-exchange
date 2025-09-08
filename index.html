@@ -5,144 +5,139 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
-  <header class="site-header">
-    <div class="container header-inner">
-      <div>
-        <h1>♻️ Reuse & Recycle Exchange</h1>
-        <p class="tagline">Give items a second life — exchange on campus</p>
-      </div>
-      <div class="header-actions">
-        <button id="openAddBtn" class="btn primary">+ Add Item</button>
-        <button id="loadSample" class="btn">Load Samples</button>
-      </div>
-    </div>
+  <header>
+    <h1>♻️ Reuse & Recycle Exchange</h1>
+    <input type="text" id="searchBar" placeholder="Search for items...">
+    <button onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button>
   </header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#exchange">Exchange</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <main>
+    <h2>Available Items</h2>
+    <div id="itemsList" class="grid"></div>
 
-  <main class="container">
-    <section id="about" class="card">
-      <h2>About Us</h2>
-      <p>
-        Welcome to the <b>Reuse & Recycle Exchange</b> — a sustainable campus initiative 
-        that empowers students to <b>donate, exchange, and repurpose</b> items instead of 
-        letting them go to waste. From textbooks and electronics to furniture and clothing, 
-        every exchange helps reduce landfill waste and creates a culture of sharing.  
-        <br><br>
-        Together, we aim to <b>save resources, support each other, and build a greener future 🌱</b>.
-      </p>
-    </section>
-
-    <section id="exchange" class="card">
-      <h2>Available Items</h2>
-
-      <!-- Filters -->
-      <div class="controls">
-        <input id="searchInput" placeholder="🔍 Search items..." />
-        <select id="categoryFilter">
-          <option value="">All Categories</option>
-          <option value="Books">Books</option>
-          <option value="Electronics">Electronics</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Other">Other</option>
-        </select>
-        <select id="sortSelect">
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="condition">Best Condition</option>
-        </select>
-      </div>
-
-      <!-- Grid -->
-      <section id="itemsGrid" class="items-grid">
-        <!-- Items injected by JS -->
-      </section>
-    </section>
-
-    <section id="contact" class="card">
-      <h2>Contact Us</h2>
-      <p>Email: <a href="mailto:greenjhc@gmail.com">greenjhc@gmail.com</a></p>
-      <p>📱 Mobile: <a href="tel:9833390175">9833390175</a></p>
-      <p>📍 Location: JHC Campus, Churchgate</p>
-    </section>
+    <h2>Search Results</h2>
+    <div id="searchResults" class="grid"></div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; <span id="year"></span> Reuse & Recycle Exchange — College Project</p>
-    </div>
-  </footer>
-
-  <!-- Modal for add item -->
-  <div id="modal" class="modal hidden">
-    <div class="modal-panel">
-      <button id="closeModal" class="modal-close">✕</button>
-      <h2>Add an Item</h2>
-      <form id="itemForm">
-        <label>Title
-          <input name="title" required />
-        </label>
-
-        <label>Description
-          <textarea name="description" rows="3"></textarea>
-        </label>
-
-        <label>Category
-          <select name="category" required>
-            <option value="Books">Books</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Furniture">Furniture</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Other">Other</option>
-          </select>
-        </label>
-
-        <label>Condition
-          <select name="condition">
-            <option>New</option>
-            <option>Like New</option>
-            <option>Good</option>
-            <option>Fair</option>
-          </select>
-        </label>
-
-        <label>Email
-          <input type="email" name="email" required value="greenjhc@gmail.com" />
-        </label>
-
-        <label>Mobile
-          <input type="tel" name="phone" required value="9833390175" pattern="[0-9]{10}" />
-        </label>
-
-        <label>Location
-          <input name="location" value="JHC Campus, Churchgate" />
-        </label>
-
-        <label>Image URL (optional)
-          <input name="imageUrl" placeholder="https://..." />
-        </label>
-
-        <label>Upload Image (optional)
-          <input type="file" accept="image/*" id="imageFile" />
-        </label>
-
-        <div class="modal-actions">
-          <button type="submit" class="btn primary">Add</button>
-          <button type="button" id="cancelAdd" class="btn">Cancel</button>
-        </div>
-      </form>
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCart()">&times;</span>
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Demo item database
+    const items = [
+      { id: 1, name: "Study Table", category: "Furniture" },
+      { id: 2, name: "Laptop Bag", category: "Accessories" },
+      { id: 3, name: "Engineering Books", category: "Books" },
+      { id: 4, name: "Cycle", category: "Transport" },
+      { id: 5, name: "Calculator", category: "Electronics" },
+      { id: 6, name: "Chair", category: "Furniture" }
+    ];
+
+    let cart = [];
+
+    // Display all items
+    function displayItems() {
+      const itemsList = document.getElementById("itemsList");
+      itemsList.innerHTML = items.map(item => `
+        <div class="card">
+          <h3>${item.name}</h3>
+          <p>${item.category}</p>
+          <button onclick="addToCart(${item.id})">Add to Cart</button>
+        </div>
+      `).join("");
+    }
+
+    // Search function
+    document.getElementById("searchBar").addEventListener("input", function() {
+      const query = this.value.toLowerCase();
+      const searchResults = document.getElementById("searchResults");
+
+      if (query.trim() === "") {
+        searchResults.innerHTML = "";
+        return;
+      }
+
+      let matched = items.filter(item => item.name.toLowerCase().includes(query));
+      
+      if (matched.length === 0) {
+        // Show similar items by category if no direct match
+        let similar = items.filter(item => item.category.toLowerCase().includes(query));
+        searchResults.innerHTML = "<h4>No exact matches. Showing similar items:</h4>" +
+          similar.map(item => `
+            <div class="card">
+              <h3>${item.name}</h3>
+              <p>${item.category}</p>
+              <button onclick="addToCart(${item.id})">Add to Cart</button>
+            </div>
+          `).join("");
+      } else {
+        searchResults.innerHTML = matched.map(item => `
+          <div class="card">
+            <h3>${item.name}</h3>
+            <p>${item.category}</p>
+            <button onclick="addToCart(${item.id})">Add to Cart</button>
+          </div>
+        `).join("");
+      }
+    });
+
+    // Add item to cart
+    function addToCart(id) {
+      const item = items.find(i => i.id === id);
+      cart.push(item);
+      updateCart();
+    }
+
+    // Remove item from cart
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    // Update cart display
+    function updateCart() {
+      document.getElementById("cartCount").textContent = cart.length;
+      const cartItems = document.getElementById("cartItems");
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+      cartItems.innerHTML = cart.map((item, index) => `
+        <div class="card">
+          <h3>${item.name}</h3>
+          <p>${item.category}</p>
+          <button class="remove" onclick="removeFromCart(${index})">❌ Remove</button>
+        </div>
+      `).join("");
+    }
+
+    // Open and close modal
+    function openCart() {
+      document.getElementById("cartModal").style.display = "flex";
+    }
+
+    function closeCart() {
+      document.getElementById("cartModal").style.display = "none";
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+      const modal = document.getElementById("cartModal");
+      if (event.target === modal) {
+        closeCart();
+      }
+    }
+
+    // Initial load
+    displayItems();
+  </script>
 </body>
 </html>
