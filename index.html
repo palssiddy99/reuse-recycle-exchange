@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <!-- Header -->
@@ -28,19 +29,19 @@
       <h2>Available Items</h2>
       <div class="grid" id="item-list">
         <div class="card">
-          <img src="https://i.ibb.co/j8g1W1X/study-table.jpg" alt="Study Table">
+          <img src="https://images.unsplash.com/photo-1582582494700-7ea4c2a43a5d?w=600" alt="Study Table">
           <h3>Study Table</h3>
           <p>Furniture</p>
           <button onclick="addToCart('Study Table')">Add to Cart</button>
         </div>
         <div class="card">
-          <img src="https://i.ibb.co/Wzsc95c/laptop-bag.jpg" alt="Laptop Bag">
+          <img src="https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=600" alt="Laptop Bag">
           <h3>Laptop Bag</h3>
           <p>Accessories</p>
           <button onclick="addToCart('Laptop Bag')">Add to Cart</button>
         </div>
         <div class="card">
-          <img src="https://i.ibb.co/MR1hJts/engineering-books.jpg" alt="Engineering Books">
+          <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600" alt="Engineering Books">
           <h3>Engineering Books</h3>
           <p>Books</p>
           <button onclick="addToCart('Engineering Books')">Add to Cart</button>
@@ -66,12 +67,11 @@
         <input type="text" placeholder="Your Name" required>
         <input type="email" placeholder="Your Email" required>
         <textarea placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
+        <button type="submit" class="send-btn">Send Message</button>
       </form>
       <div class="socials">
-        <a href="#">📧 Email</a>
-        <a href="#">💼 LinkedIn</a>
-        <a href="#">🐦 Twitter</a>
+        <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
+        <a href="mailto:example@gmail.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
       </div>
     </section>
   </main>
