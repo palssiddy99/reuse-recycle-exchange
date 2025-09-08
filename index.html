@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reuse & Recycle Exchange</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f7f6;
+      color: #333;
+    }
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #388e3c;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .btn {
+      display: inline-block;
+      background: #2e7d32;
+      color: white;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #1b5e20;
+    }
+    footer {
+      background: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Reuse & Recycle Exchange</h1>
+    <p>Give items a second life, reduce waste, and save the planet 🌍</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#exchange">Exchange</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="container">
+    <section id="about" class="card">
+      <h2>About Us</h2>
+      <p>
+        The Reuse & Recycle Exchange is a platform where students and community members 
+        can exchange items they no longer need. Instead of throwing things away, 
+        you can give them to someone who will use them.
+      </p>
+    </section>
+
+    <section id="exchange" class="card">
+      <h2>Available Items</h2>
+      <ul id="items-list">
+        <li>📚 Old Textbooks</li>
+        <li>🪑 Study Table</li>
+        <li>💻 Used Laptop</li>
+      </ul>
+      <button class="btn" onclick="addItem()">Add Your Item</button>
+    </section>
+
+    <section id="contact" class="card">
+      <h2>Contact Us</h2>
+      <p>Email: recycle.exchange@gmail.com</p>
+      <p>Location: College Campus</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Reuse & Recycle Exchange | Made for College Project</p>
+  </footer>
+
+  <script>
+    function addItem() {
+      let item = prompt("Enter the item you want to exchange:");
+      if(item) {
+        let ul = document.getElementById("items-list");
+        let li = document.createElement("li");
+        li.textContent = "♻️ " + item;
+        ul.appendChild(li);
+      }
+    }
+  </script>
+
+</body>
+</html>
