@@ -29,22 +29,22 @@
       <h2>Available Items</h2>
       <div class="grid" id="item-list">
         <div class="card">
-          <img src="https://images.unsplash.com/photo-1582582494700-7ea4c2a43a5d?w=600" alt="Study Table">
-          <h3>Study Table</h3>
-          <p>Furniture</p>
-          <button onclick="addToCart('Study Table')">Add to Cart</button>
-        </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=600" alt="Laptop Bag">
+          <img src="https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=600&q=80" alt="Laptop Bag">
           <h3>Laptop Bag</h3>
           <p>Accessories</p>
-          <button onclick="addToCart('Laptop Bag')">Add to Cart</button>
+          <button onclick="addToCart('Laptop Bag','https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=300&q=80')">Add to Cart</button>
         </div>
         <div class="card">
-          <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600" alt="Engineering Books">
+          <img src="https://images.unsplash.com/photo-1598620617135-d6f8e1d16a32?w=600&q=80" alt="Wooden Study Table">
+          <h3>Study Table</h3>
+          <p>Furniture</p>
+          <button onclick="addToCart('Study Table','https://images.unsplash.com/photo-1598620617135-d6f8e1d16a32?w=300&q=80')">Add to Cart</button>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80" alt="Engineering Books">
           <h3>Engineering Books</h3>
           <p>Books</p>
-          <button onclick="addToCart('Engineering Books')">Add to Cart</button>
+          <button onclick="addToCart('Engineering Books','https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&q=80')">Add to Cart</button>
         </div>
       </div>
     </section>
@@ -94,8 +94,8 @@
   <script>
     let cart = [];
 
-    function addToCart(item) {
-      cart.push(item);
+    function addToCart(item, img) {
+      cart.push({ name: item, image: img });
       document.getElementById("cart-count").innerText = cart.length;
       renderCart();
     }
@@ -103,13 +103,24 @@
     function renderCart() {
       let cartList = document.getElementById("cart-items");
       cartList.innerHTML = "";
-      cart.forEach((item, index) => {
+      cart.forEach((product, index) => {
         let li = document.createElement("li");
-        li.textContent = item + " ";
+        li.className = "cart-item";
+
+        let img = document.createElement("img");
+        img.src = product.image;
+        img.alt = product.name;
+
+        let span = document.createElement("span");
+        span.textContent = product.name;
+
         let removeBtn = document.createElement("button");
         removeBtn.textContent = "Remove";
         removeBtn.className = "remove";
         removeBtn.onclick = () => { removeFromCart(index); };
+
+        li.appendChild(img);
+        li.appendChild(span);
         li.appendChild(removeBtn);
         cartList.appendChild(li);
       });
