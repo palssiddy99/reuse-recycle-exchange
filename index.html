@@ -1,18 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f7f6;
+      color: #333;
+    }
+    header {
+      background: #2e7d32;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #388e3c;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .btn {
+      display: inline-block;
+      background: #2e7d32;
+      color: white;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #1b5e20;
+    }
+    footer {
+      background: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
   <link href="styles.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
       <div>
         <h1>Reuse & Recycle Exchange</h1>
-        <p class="tagline">Give items a second life — exchange on campus</p>
+        <p class="tagline">Give items a second life — exchange on campus 🌍</p>
       </div>
       <div class="header-actions">
         <button id="openAddBtn" class="btn primary">Add Item</button>
@@ -21,8 +82,39 @@
     </div>
   </header>
 
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#about">About</a>
+    <a href="#exchange">Exchange</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
   <main class="container">
-    <section class="controls">
+    
+    <!-- About Section -->
+    <section id="about" class="card">
+      <h2>About Us</h2>
+      <p>
+        The Reuse & Recycle Exchange is a platform where students and community members 
+        can exchange items they no longer need. Instead of throwing things away, 
+        you can give them to someone who will use them.
+      </p>
+    </section>
+
+    <!-- Exchange Section -->
+    <section id="exchange" class="card">
+      <h2>Available Items</h2>
+      <ul id="items-list">
+        <li>📚 Old Textbooks</li>
+        <li>🪑 Study Table</li>
+        <li>💻 Used Laptop</li>
+      </ul>
+      <button class="btn" onclick="addItem()">Add Your Item</button>
+    </section>
+
+    <!-- Controls for search/filter -->
+    <section class="controls card">
       <input id="searchInput" placeholder="Search items or description..." />
       <select id="categoryFilter">
         <option value="">All categories</option>
@@ -34,18 +126,43 @@
       </select>
     </section>
 
-    <section id="itemsGrid" class="items-grid">
+    <!-- Items Grid -->
+    <section id="itemsGrid" class="items-grid card">
       <!-- Items injected here -->
     </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="card">
+      <h2>Contact Us</h2>
+      <p>Email: recycle.exchange@gmail.com</p>
+      <p>Location: College Campus</p>
+    </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <p>&copy; <span id="year"></span> Reuse & Recycle Exchange — College Project</p>
     </div>
   </footer>
 
-  <!-- Modal for add item -->
+  <!-- Script -->
+  <script>
+    function addItem() {
+      let item = prompt("Enter the item you want to exchange:");
+      if(item) {
+        let ul = document.getElementById("items-list");
+        let li = document.createElement("li");
+        li.textContent = "♻️ " + item;
+        ul.appendChild(li);
+      }
+    }
+    // Auto-update footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Modal for Add Item -->
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-panel">
       <button id="closeModal" class="modal-close">✕</button>
@@ -64,7 +181,8 @@
         </label>
         <label>Condition
           <select name="condition">
-            <option>New</option><option>Like New</option><option>Good</option><option>Fair</option>
+            <option>New</option><option>Like New</option>
+            <option>Good</option><option>Fair</option>
           </select>
         </label>
         <label>Contact (email/phone)<input name="contact" required /></label>
