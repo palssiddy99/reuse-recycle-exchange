@@ -1,92 +1,109 @@
-body {
-  font-family: 'Inter', Arial, sans-serif;
-  margin: 0;
-  background: #f4f7f6;
-  color: #333;
+// Footer year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Sample items
+const sampleItems = [
+  {
+    title: "📚 Old Textbooks",
+    description: "Engineering books from last semester",
+    category: "Books",
+    condition: "Good",
+    contact: "student@example.com",
+    imageUrl: "https://source.unsplash.com/400x300/?books"
+  },
+  {
+    title: "🪑 Study Table",
+    description: "Wooden study table in decent condition",
+    category: "Furniture",
+    condition: "Fair",
+    contact: "9999999999",
+    imageUrl: "https://source.unsplash.com/400x300/?table"
+  },
+  {
+    title: "💻 Used Laptop",
+    description: "Old but working Dell laptop",
+    category: "Electronics",
+    condition: "Like New",
+    contact: "student2@example.com",
+    imageUrl: "https://source.unsplash.com/400x300/?laptop"
+  }
+];
+
+let items = [];
+
+// Add item card
+function renderItems(list = items) {
+  const grid = document.getElementById("itemsGrid");
+  grid.innerHTML = "";
+
+  list.forEach(item => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <img src="${item.imageUrl || "https://via.placeholder.com/400x300"}" alt="Item image">
+      <h3>${item.title}</h3>
+      <p>${item.description}</p>
+      <p><b>Category:</b> ${item.category}</p>
+      <p><b>Condition:</b> ${item.condition}</p>
+      <p><b>Contact:</b> ${item.contact}</p>
+    `;
+    grid.appendChild(card);
+  });
 }
-header {
-  background: #2e7d32;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-}
-nav {
-  background: #388e3c;
-  padding: 0.5rem;
-  text-align: center;
-}
-nav a {
-  color: white;
-  margin: 0 1rem;
-  text-decoration: none;
-  font-weight: bold;
-}
-nav a:hover {
-  text-decoration: underline;
-}
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 2rem;
-}
-.card {
-  background: white;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.btn {
-  display: inline-block;
-  background: #2e7d32;
-  color: white;
-  padding: 0.5rem 1rem;
-  margin-top: 1rem;
-  border-radius: 5px;
-  text-decoration: none;
-  cursor: pointer;
-}
-.btn:hover {
-  background: #1b5e20;
-}
-footer {
-  background: #2e7d32;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-}
-.modal.hidden {
-  display: none;
-}
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-panel {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-}
-.modal-close {
-  background: transparent;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  float: right;
-}
-.items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-.items-grid .card {
-  padding: 1rem;
-  text-align: center;
+
+// Load samples
+document.getElementById("loadSample").onclick = () => {
+  items = [...sampleItems];
+  renderItems();
+};
+
+// Modal controls
+const modal = document.getElementById("modal");
+document.getElementById("openAddBtn").onclick = () => modal.classList.remove("hidden");
+document.getElementById("closeModal").onclick = () => modal.classList.add("hidden");
+document.getElementById("cancelAdd").onclick = () => modal.classList.add("hidden");
+
+// Handle form
+document.getElementById("itemForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  const newItem = {
+    title: formData.get("title"),
+    description: formData.get("description"),
+    category: formData.get("category"),
+    condition: formData.get("condition"),
+    contact: formData.get("contact"),
+    imageUrl: formData.get("imageUrl")
+  };
+
+  items.unshift(newItem);
+  renderItems();
+  modal.classList.add("hidden");
+  this.reset();
+});
+
+// Search + filter + sort
+document.getElementById("searchInput").addEventListener("input", filterAndSort);
+document.getElementById("categoryFilter").addEventListener("change", filterAndSort);
+document.getElementById("sortSelect").addEventListener("change", filterAndSort);
+
+function filterAndSort() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const category = document.getElementById("categoryFilter").value;
+  const sort = document.getElementById("sortSelect").value;
+
+  let filtered = items.filter(i =>
+    i.title.toLowerCase().includes(search) ||
+    i.description.toLowerCase().includes(search)
+  );
+  if (category) filtered = filtered.filter(i => i.category === category);
+
+  if (sort === "newest") filtered = filtered.reverse();
+  if (sort === "condition") {
+    const order = ["New", "Like New", "Good", "Fair"];
+    filtered.sort((a, b) => order.indexOf(a.condition) - order.indexOf(b.condition));
+  }
+
+  renderItems(filtered);
 }
