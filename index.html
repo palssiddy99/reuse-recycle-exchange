@@ -2,142 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Header -->
   <header>
     <h1>♻️ Reuse & Recycle Exchange</h1>
-    <input type="text" id="searchBar" placeholder="Search for items...">
-    <button onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button>
+    <nav>
+      <a href="#items">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="actions">
+      <input type="text" id="search" placeholder="Search for items..." onkeyup="searchItems()">
+      <button id="cart-btn" onclick="openCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
+    </div>
   </header>
 
+  <!-- Main Section -->
   <main>
-    <h2>Available Items</h2>
-    <div id="itemsList" class="grid"></div>
+    <section id="items">
+      <h2>Available Items</h2>
+      <div class="grid" id="item-list">
+        <div class="card">
+          <h3>Study Table</h3>
+          <p>Furniture</p>
+          <button onclick="addToCart('Study Table')">Add to Cart</button>
+        </div>
+        <div class="card">
+          <h3>Laptop Bag</h3>
+          <p>Accessories</p>
+          <button onclick="addToCart('Laptop Bag')">Add to Cart</button>
+        </div>
+        <div class="card">
+          <h3>Engineering Books</h3>
+          <p>Books</p>
+          <button onclick="addToCart('Engineering Books')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
 
-    <h2>Search Results</h2>
-    <div id="searchResults" class="grid"></div>
+    <!-- About Us -->
+    <section id="about">
+      <h2>About Us</h2>
+      <p>
+        Welcome to the <b>Reuse & Recycle Exchange</b> — a community-driven platform 
+        where students can donate, exchange, and reuse items instead of throwing them away.  
+        Our goal: <b>reduce waste, save money, and protect the planet 🌍</b>.
+      </p>
+    </section>
+
+    <!-- Contact Us -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>We’d love to hear from you! Get in touch via the form below:</p>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div class="socials">
+        <a href="#">📧 Email</a>
+        <a href="#">💼 LinkedIn</a>
+        <a href="#">🐦 Twitter</a>
+      </div>
+    </section>
   </main>
 
   <!-- Cart Modal -->
-  <div id="cartModal" class="modal">
+  <div id="cart-modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeCart()">&times;</span>
       <h2>Your Cart</h2>
-      <div id="cartItems"></div>
+      <ul id="cart-items"></ul>
     </div>
   </div>
 
-  <script>
-    // Demo item database
-    const items = [
-      { id: 1, name: "Study Table", category: "Furniture" },
-      { id: 2, name: "Laptop Bag", category: "Accessories" },
-      { id: 3, name: "Engineering Books", category: "Books" },
-      { id: 4, name: "Cycle", category: "Transport" },
-      { id: 5, name: "Calculator", category: "Electronics" },
-      { id: 6, name: "Chair", category: "Furniture" }
-    ];
+  <footer>
+    <p>© 2025 Reuse & Recycle Exchange. All rights reserved.</p>
+  </footer>
 
+  <!-- JS -->
+  <script>
     let cart = [];
 
-    // Display all items
-    function displayItems() {
-      const itemsList = document.getElementById("itemsList");
-      itemsList.innerHTML = items.map(item => `
-        <div class="card">
-          <h3>${item.name}</h3>
-          <p>${item.category}</p>
-          <button onclick="addToCart(${item.id})">Add to Cart</button>
-        </div>
-      `).join("");
-    }
-
-    // Search function
-    document.getElementById("searchBar").addEventListener("input", function() {
-      const query = this.value.toLowerCase();
-      const searchResults = document.getElementById("searchResults");
-
-      if (query.trim() === "") {
-        searchResults.innerHTML = "";
-        return;
-      }
-
-      let matched = items.filter(item => item.name.toLowerCase().includes(query));
-      
-      if (matched.length === 0) {
-        // Show similar items by category if no direct match
-        let similar = items.filter(item => item.category.toLowerCase().includes(query));
-        searchResults.innerHTML = "<h4>No exact matches. Showing similar items:</h4>" +
-          similar.map(item => `
-            <div class="card">
-              <h3>${item.name}</h3>
-              <p>${item.category}</p>
-              <button onclick="addToCart(${item.id})">Add to Cart</button>
-            </div>
-          `).join("");
-      } else {
-        searchResults.innerHTML = matched.map(item => `
-          <div class="card">
-            <h3>${item.name}</h3>
-            <p>${item.category}</p>
-            <button onclick="addToCart(${item.id})">Add to Cart</button>
-          </div>
-        `).join("");
-      }
-    });
-
-    // Add item to cart
-    function addToCart(id) {
-      const item = items.find(i => i.id === id);
+    function addToCart(item) {
       cart.push(item);
-      updateCart();
+      document.getElementById("cart-count").innerText = cart.length;
+      renderCart();
     }
 
-    // Remove item from cart
+    function renderCart() {
+      let cartList = document.getElementById("cart-items");
+      cartList.innerHTML = "";
+      cart.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.textContent = item + " ";
+        let removeBtn = document.createElement("button");
+        removeBtn.textContent = "Remove";
+        removeBtn.className = "remove";
+        removeBtn.onclick = () => { removeFromCart(index); };
+        li.appendChild(removeBtn);
+        cartList.appendChild(li);
+      });
+    }
+
     function removeFromCart(index) {
       cart.splice(index, 1);
-      updateCart();
+      document.getElementById("cart-count").innerText = cart.length;
+      renderCart();
     }
 
-    // Update cart display
-    function updateCart() {
-      document.getElementById("cartCount").textContent = cart.length;
-      const cartItems = document.getElementById("cartItems");
-      if (cart.length === 0) {
-        cartItems.innerHTML = "<p>Your cart is empty.</p>";
-        return;
-      }
-      cartItems.innerHTML = cart.map((item, index) => `
-        <div class="card">
-          <h3>${item.name}</h3>
-          <p>${item.category}</p>
-          <button class="remove" onclick="removeFromCart(${index})">❌ Remove</button>
-        </div>
-      `).join("");
-    }
-
-    // Open and close modal
     function openCart() {
-      document.getElementById("cartModal").style.display = "flex";
+      document.getElementById("cart-modal").style.display = "flex";
     }
 
     function closeCart() {
-      document.getElementById("cartModal").style.display = "none";
+      document.getElementById("cart-modal").style.display = "none";
     }
 
-    // Close modal on outside click
-    window.onclick = function(event) {
-      const modal = document.getElementById("cartModal");
-      if (event.target === modal) {
-        closeCart();
-      }
+    function searchItems() {
+      let input = document.getElementById("search").value.toLowerCase();
+      let cards = document.querySelectorAll(".card");
+      cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "block" : "none";
+      });
     }
-
-    // Initial load
-    displayItems();
   </script>
 </body>
 </html>
