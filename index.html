@@ -31,15 +31,14 @@
   <main class="container">
     <section id="about" class="card">
       <h2>About Us</h2>
-     <p>
-  Welcome to the <b>Reuse & Recycle Exchange</b> — a sustainable campus initiative 
-  that empowers students to <b>donate, exchange, and repurpose</b> items instead of 
-  letting them go to waste. From textbooks and electronics to furniture and clothing, 
-  every exchange helps reduce landfill waste and creates a culture of sharing.  
-  <br><br>
-  Together, we aim to <b>save resources, support each other, and build a greener future 🌱</b>.
-</p>
-
+      <p>
+        Welcome to the <b>Reuse & Recycle Exchange</b> — a sustainable campus initiative 
+        that empowers students to <b>donate, exchange, and repurpose</b> items instead of 
+        letting them go to waste. From textbooks and electronics to furniture and clothing, 
+        every exchange helps reduce landfill waste and creates a culture of sharing.  
+        <br><br>
+        Together, we aim to <b>save resources, support each other, and build a greener future 🌱</b>.
+      </p>
     </section>
 
     <section id="exchange" class="card">
@@ -71,8 +70,9 @@
 
     <section id="contact" class="card">
       <h2>Contact Us</h2>
-      <p>Email: recycle.exchange@gmail.com</p>
-      <p>📍 Location: College Campus</p>
+      <p>Email: <a href="mailto:greenjhc@gmail.com">greenjhc@gmail.com</a></p>
+      <p>📱 Mobile: <a href="tel:9833390175">9833390175</a></p>
+      <p>📍 Location: JHC Campus, Churchgate</p>
     </section>
   </main>
 
@@ -88,8 +88,14 @@
       <button id="closeModal" class="modal-close">✕</button>
       <h2>Add an Item</h2>
       <form id="itemForm">
-        <label>Title<input name="title" required /></label>
-        <label>Description<textarea name="description" rows="3"></textarea></label>
+        <label>Title
+          <input name="title" required />
+        </label>
+
+        <label>Description
+          <textarea name="description" rows="3"></textarea>
+        </label>
+
         <label>Category
           <select name="category" required>
             <option value="Books">Books</option>
@@ -99,15 +105,35 @@
             <option value="Other">Other</option>
           </select>
         </label>
+
         <label>Condition
           <select name="condition">
-            <option>New</option><option>Like New</option>
-            <option>Good</option><option>Fair</option>
+            <option>New</option>
+            <option>Like New</option>
+            <option>Good</option>
+            <option>Fair</option>
           </select>
         </label>
-        <label>Contact (email/phone)<input name="contact" required /></label>
-        <label>Image URL (optional)<input name="imageUrl" placeholder="https://..." /></label>
-        <label>Upload Image (optional)<input type="file" accept="image/*" id="imageFile" /></label>
+
+        <label>Email
+          <input type="email" name="email" required value="greenjhc@gmail.com" />
+        </label>
+
+        <label>Mobile
+          <input type="tel" name="phone" required value="9833390175" pattern="[0-9]{10}" />
+        </label>
+
+        <label>Location
+          <input name="location" value="JHC Campus, Churchgate" />
+        </label>
+
+        <label>Image URL (optional)
+          <input name="imageUrl" placeholder="https://..." />
+        </label>
+
+        <label>Upload Image (optional)
+          <input type="file" accept="image/*" id="imageFile" />
+        </label>
 
         <div class="modal-actions">
           <button type="submit" class="btn primary">Add</button>
