@@ -4,104 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f7f6;
-      color: #333;
-      transition: background 0.3s, color 0.3s;
-    }
-    header {
-      background: #2e7d32;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      background: #388e3c;
-      padding: 0.5rem;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover { text-decoration: underline; }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 2rem;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      margin: 1rem 0;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .btn {
-      display: inline-block;
-      background: #2e7d32;
-      color: white;
-      padding: 0.5rem 1rem;
-      margin-top: 1rem;
-      border-radius: 5px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .btn:hover { background: #1b5e20; }
-    footer {
-      background: #2e7d32;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-      gap: 1rem;
-    }
-    .item-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .item-card img {
-      width: 100%;
-      border-radius: 5px;
-      max-height: 150px;
-      object-fit: cover;
-    }
-    .item-actions {
-      margin-top: 0.5rem;
-    }
-    .exchanged { opacity: 0.6; text-decoration: line-through; }
-    /* Dark mode */
-    body.dark {
-      background: #1c1c1c;
-      color: #f0f0f0;
-    }
-    body.dark .card, body.dark .item-card {
-      background: #2a2a2a;
-      color: #f0f0f0;
-    }
-    body.dark nav, body.dark header, body.dark footer {
-      background: #111;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <header class="site-header">
-    <h1>Reuse & Recycle Exchange</h1>
-    <p>Give items a second life — exchange on campus 🌍</p>
-    <button id="openAddBtn" class="btn">Add Item</button>
-    <button id="toggleDark" class="btn">🌙 Dark Mode</button>
+    <div class="container header-inner">
+      <div>
+        <h1>Reuse & Recycle Exchange</h1>
+        <p class="tagline">Give items a second life — exchange on campus 🌍</p>
+      </div>
+      <div class="header-actions">
+        <button id="openAddBtn" class="btn primary">Add Item</button>
+        <button id="loadSample" class="btn">Load Sample</button>
+      </div>
+    </div>
   </header>
 
   <nav>
@@ -111,28 +29,39 @@
   </nav>
 
   <main class="container">
-
     <section id="about" class="card">
       <h2>About Us</h2>
-      <p>Platform where students can exchange items instead of throwing them away.</p>
+      <p>
+        The Reuse & Recycle Exchange is a platform where students and community members 
+        can exchange items they no longer need. Instead of throwing things away, 
+        you can give them to someone who will use them.
+      </p>
     </section>
 
     <section id="exchange" class="card">
       <h2>Available Items</h2>
-      <div class="controls">
-        <input id="searchInput" placeholder="Search items..." />
+      <ul id="items-list">
+        <li>📚 Old Textbooks</li>
+        <li>🪑 Study Table</li>
+        <li>💻 Used Laptop</li>
+      </ul>
+      <button class="btn" onclick="addItem()">Add Your Item</button>
+
+      <section class="controls">
+        <input id="searchInput" placeholder="Search items or description..." />
         <select id="categoryFilter">
           <option value="">All categories</option>
-          <option>Books</option><option>Electronics</option>
-          <option>Furniture</option><option>Clothing</option>
         </select>
         <select id="sortSelect">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
           <option value="condition">Best Condition</option>
         </select>
-      </div>
-      <div id="itemsGrid" class="items-grid"></div>
+      </section>
+
+      <section id="itemsGrid" class="items-grid">
+        <!-- Items injected here -->
+      </section>
     </section>
 
     <section id="contact" class="card">
@@ -140,102 +69,49 @@
       <p>Email: recycle.exchange@gmail.com</p>
       <p>Location: College Campus</p>
     </section>
-
   </main>
 
-  <footer>
-    <p>&copy; <span id="year"></span> Reuse & Recycle Exchange</p>
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Reuse & Recycle Exchange — College Project</p>
+    </div>
   </footer>
 
-  <!-- Modal -->
-  <div id="modal" class="modal hidden" style="display:none;">
-    <div class="card">
-      <button id="closeModal" class="btn">✕ Close</button>
-      <h2>Add Item</h2>
+  <!-- Modal for add item -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <button id="closeModal" class="modal-close">✕</button>
+      <h2>Add an item</h2>
       <form id="itemForm">
-        <label>Title<input name="title" required></label><br>
-        <label>Description<textarea name="description" rows="3"></textarea></label><br>
+        <label>Title<input name="title" required /></label>
+        <label>Description<textarea name="description" rows="3"></textarea></label>
         <label>Category
-          <select name="category" required>
-            <option>Books</option><option>Electronics</option>
-            <option>Furniture</option><option>Clothing</option>
-            <option>Other</option>
+          <select name="category" id="categoryInput" required>
+            <option value="Books">Books</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Other">Other</option>
           </select>
-        </label><br>
+        </label>
         <label>Condition
           <select name="condition">
             <option>New</option><option>Like New</option>
             <option>Good</option><option>Fair</option>
           </select>
-        </label><br>
-        <label>Contact<input name="contact" required></label><br>
-        <label>Image URL<input name="imageUrl" placeholder="https://..."></label><br>
-        <button type="submit" class="btn">Add Item</button>
+        </label>
+        <label>Contact (email/phone)<input name="contact" required /></label>
+        <label>Image URL (optional)<input name="imageUrl" placeholder="https://..." /></label>
+        <label>Or upload image (optional)<input type="file" accept="image/*" id="imageFile" /></label>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn primary">Add</button>
+          <button type="button" id="cancelAdd" class="btn">Cancel</button>
+        </div>
       </form>
     </div>
   </div>
 
-  <script>
-    const modal = document.getElementById("modal");
-    const openBtn = document.getElementById("openAddBtn");
-    const closeBtn = document.getElementById("closeModal");
-    const form = document.getElementById("itemForm");
-    const grid = document.getElementById("itemsGrid");
-    const year = document.getElementById("year");
-    const darkBtn = document.getElementById("toggleDark");
-    let items = JSON.parse(localStorage.getItem("items")) || [];
-
-    year.textContent = new Date().getFullYear();
-
-    openBtn.onclick = () => modal.style.display = "block";
-    closeBtn.onclick = () => modal.style.display = "none";
-
-    function renderItems() {
-      grid.innerHTML = "";
-      items.forEach((item,i) => {
-        let card = document.createElement("div");
-        card.className = "item-card" + (item.exchanged ? " exchanged" : "");
-        card.innerHTML = `
-          ${item.imageUrl ? `<img src="${item.imageUrl}">` : ""}
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-          <p><b>Category:</b> ${item.category} | <b>Condition:</b> ${item.condition}</p>
-          <p><b>Contact:</b> ${item.contact}</p>
-          <div class="item-actions">
-            <button onclick="toggleExchange(${i})" class="btn">✅ Exchanged</button>
-            <button onclick="deleteItem(${i})" class="btn">❌ Delete</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      localStorage.setItem("items", JSON.stringify(items));
-    }
-
-    form.onsubmit = e => {
-      e.preventDefault();
-      const data = new FormData(form);
-      items.unshift({
-        title: data.get("title"),
-        description: data.get("description"),
-        category: data.get("category"),
-        condition: data.get("condition"),
-        contact: data.get("contact"),
-        imageUrl: data.get("imageUrl"),
-        exchanged: false,
-        addedAt: Date.now()
-      });
-      form.reset();
-      modal.style.display = "none";
-      renderItems();
-    }
-
-    function deleteItem(i){ items.splice(i,1); renderItems(); }
-    function toggleExchange(i){ items[i].exchanged = !items[i].exchanged; renderItems(); }
-
-    // Dark mode
-    darkBtn.onclick = ()=> document.body.classList.toggle("dark");
-
-    renderItems();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
