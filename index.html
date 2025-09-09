@@ -1,153 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reuse & Recycle Exchange</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <h1>♻️ Reuse & Recycle Exchange</h1>
-    <nav>
-      <a href="#items">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+  <!-- ===== NAV / HEADER ===== -->
+  <header class="site-header container">
+    <a class="logo" href="#">
+      <span class="logo-mark" aria-hidden="true">♻️</span>
+      <span class="logo-text">Reuse & Recycle</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#impact">Impact</a>
+      <a href="#categories">Categories</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#stories">Stories</a>
+      <a href="#awareness">Awareness</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#contact" class="btn btn-secondary">Contact</a>
     </nav>
-    <div class="actions">
-      <input type="text" id="search" placeholder="Search for items..." onkeyup="searchItems()">
-      <button id="cart-btn" onclick="openCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
-    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
   </header>
 
-  <!-- Main Section -->
-  <main>
-    <!-- Items -->
-    <section id="items">
-      <h2>Available Items</h2>
-      <div class="grid" id="item-list">
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=600&q=80" alt="Laptop Bag">
-          <h3>Laptop Bag</h3>
-          <p>Accessories</p>
-          <button onclick="addToCart('Laptop Bag','https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=300&q=80')">Add to Cart</button>
-        </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1598620617135-d6f8e1d16a32?w=600&q=80" alt="Wooden Study Table">
-          <h3>Study Table</h3>
-          <p>Furniture</p>
-          <button onclick="addToCart('Study Table','https://images.unsplash.com/photo-1598620617135-d6f8e1d16a32?w=300&q=80')">Add to Cart</button>
-        </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80" alt="Engineering Books">
-          <h3>Engineering Books</h3>
-          <p>Books</p>
-          <button onclick="addToCart('Engineering Books','https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&q=80')">Add to Cart</button>
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>Reuse More.<br>Waste Less.<br>Save Our Planet</h1>
+        <p class="lead">
+          A community-led platform to donate, exchange, and extend the life of things —
+          saving money and cutting waste.
+        </p>
+        <div class="hero-actions">
+          <a href="#marketplace" class="btn btn-primary">Browse Items</a>
+          <a href="#donate" class="btn btn-white">Donate Now</a>
         </div>
       </div>
-    </section>
 
-    <!-- About Us -->
-    <section id="about">
-      <h2>About Us</h2>
-      <p>
-        Welcome to the <b>Reuse & Recycle Exchange</b> — a community-driven platform 
-        where students can donate, exchange, and reuse items instead of throwing them away.  
-        Our goal: <b>reduce waste, save money, and protect the planet 🌍</b>.
-      </p>
-    </section>
-
-    <!-- Contact Us -->
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <p>We’d love to hear from you! Get in touch via the form below:</p>
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Message" required></textarea>
-        <button type="submit" class="send-btn">Send Message</button>
-      </form>
-      <div class="socials">
-        <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
-        <a href="mailto:example@gmail.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
+      <div class="hero-art" aria-hidden="true">
+        <!-- Simple decorative earth illustration -->
+        <svg viewBox="0 0 240 240" class="earth">
+          <defs>
+            <radialGradient id="g" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#0ea35d"/>
+              <stop offset="100%" stop-color="#0a7c47"/>
+            </radialGradient>
+          </defs>
+          <circle cx="120" cy="120" r="110" fill="url(#g)"/>
+          <path d="M40 120c20-40 70-60 120-50-10 25-35 30-35 45 0 20 25 15 35 40-35 20-80 20-120-35z" fill="#c9f3dd" opacity=".9"/>
+        </svg>
       </div>
-    </section>
-  </main>
-
-  <!-- Cart Modal -->
-  <div id="cart-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCart()">&times;</span>
-      <h2>Your Cart</h2>
-      <ul id="cart-items"></ul>
     </div>
-  </div>
+  </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Reuse & Recycle Exchange. All rights reserved.</p>
+  <!-- ===== IMPACT COUNTER ===== -->
+  <section id="impact" class="section container">
+    <h2 class="section-title">Impact Counter</h2>
+    <div class="cards3">
+      <article class="stat">
+        <div class="stat-icon">♻️</div>
+        <div>
+          <div class="stat-number" data-target="1200">0</div>
+          <div class="stat-label">Items Reused</div>
+        </div>
+      </article>
+
+      <article class="stat">
+        <div class="stat-icon">🌱</div>
+        <div>
+          <div class="stat-number" data-target="800">0</div>
+          <div class="stat-label">Kg Waste Saved</div>
+        </div>
+      </article>
+
+      <article class="stat">
+        <div class="stat-icon">💨</div>
+        <div>
+          <div class="stat-number" data-target="500">0</div>
+          <div class="stat-label">Kg CO₂ Reduced</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section id="categories" class="section container">
+    <h2 class="section-title">Categories</h2>
+    <div class="cat-grid">
+      <button class="cat" data-filter="Books" aria-label="Books">
+        <span class="cat-ic">📚</span><span>Books</span>
+      </button>
+      <button class="cat" data-filter="Electronics" aria-label="Electronics">
+        <span class="cat-ic">💻</span><span>Electronics</span>
+      </button>
+      <button class="cat" data-filter="Furniture" aria-label="Furniture">
+        <span class="cat-ic">🪑</span><span>Furniture</span>
+      </button>
+      <button class="cat" data-filter="Clothes" aria-label="Clothes">
+        <span class="cat-ic">👕</span><span>Clothes</span>
+      </button>
+      <button class="cat" data-filter="Stationery" aria-label="Stationery">
+        <span class="cat-ic">✏️</span><span>Stationery</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== SUCCESS STORIES ===== -->
+  <section id="stories" class="section container">
+    <h2 class="section-title">Success Stories</h2>
+
+    <div class="stories">
+      <button class="carousel-nav prev" aria-label="Previous story">←</button>
+
+      <div class="carousel">
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Smiling student">
+          <p>“I got a study chair for free instead of buying new — saved money & reduced waste!”</p>
+          <span class="byline">— Emma</span>
+        </article>
+
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop" alt="Student holding a book">
+          <p>“Donated my old textbooks and helped juniors. Win-win for the planet.”</p>
+          <span class="byline">— Liam</span>
+        </article>
+
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?q=80&w=600&auto=format&fit=crop" alt="Desk with lamp">
+          <p>“Found a desk lamp that works perfectly. Reused ≠ second-best!”</p>
+          <span class="byline">— Olivia</span>
+        </article>
+      </div>
+
+      <button class="carousel-nav next" aria-label="Next story">→</button>
+    </div>
+  </section>
+
+  <!-- ===== AWARENESS HUB ===== -->
+  <section id="awareness" class="section container">
+    <h2 class="section-title">Awareness Hub</h2>
+    <div class="cards3">
+      <a class="blog-card" href="#" aria-label="Why Reusing is Better than Recycling">
+        <h3>Why Reusing is Better than Recycling</h3>
+        <p>Reusing keeps items in circulation longer, avoiding the energy of reprocessing.</p>
+        <span class="link">Read →</span>
+      </a>
+      <a class="blog-card" href="#" aria-label="5 Upcycling Hacks for Students">
+        <h3>5 Upcycling Hacks for Students</h3>
+        <p>Quick DIY ideas to give a second life to your everyday stuff.</p>
+        <span class="link">Read →</span>
+      </a>
+      <a class="blog-card" href="#" aria-label="How Waste Impacts Climate">
+        <h3>How Waste Impacts Climate</h3>
+        <p>From landfills to methane emissions — here’s the big picture.</p>
+        <span class="link">Read →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== MARKETPLACE ===== -->
+  <section id="marketplace" class="section container">
+    <div class="market-head">
+      <h2 class="section-title">Marketplace</h2>
+      <div class="searchbar">
+        <input id="searchInput" type="search" placeholder="Search items…" aria-label="Search items" />
+        <button id="clearSearch" class="btn btn-soft" aria-label="Clear search">✕</button>
+      </div>
+    </div>
+
+    <div class="market-wrap">
+      <!-- Filters -->
+      <aside class="filters">
+        <h3>Filters</h3>
+        <label><input type="checkbox" class="f-cat" value="Books"> Books</label>
+        <label><input type="checkbox" class="f-cat" value="Electronics"> Electronics</label>
+        <label><input type="checkbox" class="f-cat" value="Furniture"> Furniture</label>
+        <label><input type="checkbox" class="f-cat" value="Clothes"> Clothes</label>
+        <label><input type="checkbox" class="f-cat" value="Stationery"> Stationery</label>
+        <hr>
+        <label><input type="checkbox" id="f-available" checked> Only available</label>
+      </aside>
+
+      <!-- Items Grid -->
+      <div class="items">
+        <!-- JS populates cards here -->
+      </div>
+
+      <!-- Cart -->
+      <aside class="cart">
+        <h3>Cart</h3>
+        <ul id="cartList" class="cart-list"></ul>
+        <div class="cart-empty">Your cart is empty.</div>
+        <button id="checkoutBtn" class="btn btn-primary full">Proceed</button>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== LEADERBOARD ===== -->
+  <section id="leaderboard" class="section container">
+    <h2 class="section-title">Top Contributors of the Month</h2>
+    <ol class="leaderboard">
+      <li><img src="https://i.pravatar.cc/80?img=1" alt=""><div><b>Emma</b><span>Eco Hero</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=2" alt=""><div><b>Liam</b><span>Green Saver</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=3" alt=""><div><b>Olivia</b><span>Zero Waste Champ</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=4" alt=""><div><b>Noah</b><span>Community Donor</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=5" alt=""><div><b>Ava</b><span>Reuse Rockstar</span></div></li>
+    </ol>
+  </section>
+
+  <!-- ===== DONATE (simple form placeholder) ===== -->
+  <section id="donate" class="section container">
+    <h2 class="section-title">Donate an Item</h2>
+    <form class="donate-form">
+      <input required type="text" placeholder="Item name *">
+      <input required type="text" placeholder="Category * (e.g., Books)">
+      <input type="text" placeholder="Condition (New/Good/Used)">
+      <textarea rows="3" placeholder="Short description"></textarea>
+      <button class="btn btn-primary">Submit</button>
+    </form>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <footer id="contact" class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <h3>Contact Us</h3>
+        <p>Email: support@reuse-recycle.exchange</p>
+        <p>Follow: #ReuseAndRecycle</p>
+      </div>
+      <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent!');">
+        <input type="text" placeholder="Your name" required>
+        <input type="email" placeholder="Your email" required>
+        <textarea rows="3" placeholder="Your message"></textarea>
+        <button class="btn btn-white">Send Message</button>
+      </form>
+    </div>
+    <div class="container tiny">© <span id="yr"></span> Reuse & Recycle Exchange</div>
   </footer>
 
-  <!-- JS -->
-  <script>
-    let cart = [];
-
-    function addToCart(item, img) {
-      cart.push({ name: item, image: img });
-      document.getElementById("cart-count").innerText = cart.length;
-      renderCart();
-    }
-
-    function renderCart() {
-      let cartList = document.getElementById("cart-items");
-      cartList.innerHTML = "";
-      cart.forEach((product, index) => {
-        let li = document.createElement("li");
-        li.className = "cart-item";
-
-        let img = document.createElement("img");
-        img.src = product.image;
-        img.alt = product.name;
-
-        let span = document.createElement("span");
-        span.textContent = product.name;
-
-        let removeBtn = document.createElement("button");
-        removeBtn.textContent = "Remove";
-        removeBtn.className = "remove";
-        removeBtn.onclick = () => { removeFromCart(index); };
-
-        li.appendChild(img);
-        li.appendChild(span);
-        li.appendChild(removeBtn);
-        cartList.appendChild(li);
-      });
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      document.getElementById("cart-count").innerText = cart.length;
-      renderCart();
-    }
-
-    function openCart() {
-      document.getElementById("cart-modal").style.display = "flex";
-    }
-
-    function closeCart() {
-      document.getElementById("cart-modal").style.display = "none";
-    }
-
-    function searchItems() {
-      let input = document.getElementById("search").value.toLowerCase();
-      let cards = document.querySelectorAll(".card");
-      cards.forEach(card => {
-        let text = card.innerText.toLowerCase();
-        card.style.display = text.includes(input) ? "block" : "none";
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
