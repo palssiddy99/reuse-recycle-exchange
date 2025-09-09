@@ -1,109 +1,61 @@
-// Footer year
-document.getElementById("year").textContent = new Date().getFullYear();
+// ===== Utils =====
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-// Sample items
-const sampleItems = [
-  {
-    title: "📚 Old Textbooks",
-    description: "Engineering books from last semester",
-    category: "Books",
-    condition: "Good",
-    contact: "student@example.com",
-    imageUrl: "https://source.unsplash.com/400x300/?books"
-  },
-  {
-    title: "🪑 Study Table",
-    description: "Wooden study table in decent condition",
-    category: "Furniture",
-    condition: "Fair",
-    contact: "9999999999",
-    imageUrl: "https://source.unsplash.com/400x300/?table"
-  },
-  {
-    title: "💻 Used Laptop",
-    description: "Old but working Dell laptop",
-    category: "Electronics",
-    condition: "Like New",
-    contact: "student2@example.com",
-    imageUrl: "https://source.unsplash.com/400x300/?laptop"
-  }
-];
+// Year in footer
+$("#yr").textContent = new Date().getFullYear();
 
-let items = [];
-
-// Add item card
-function renderItems(list = items) {
-  const grid = document.getElementById("itemsGrid");
-  grid.innerHTML = "";
-
-  list.forEach(item => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `
-      <img src="${item.imageUrl || "https://via.placeholder.com/400x300"}" alt="Item image">
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-      <p><b>Category:</b> ${item.category}</p>
-      <p><b>Condition:</b> ${item.condition}</p>
-      <p><b>Contact:</b> ${item.contact}</p>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-// Load samples
-document.getElementById("loadSample").onclick = () => {
-  items = [...sampleItems];
-  renderItems();
-};
-
-// Modal controls
-const modal = document.getElementById("modal");
-document.getElementById("openAddBtn").onclick = () => modal.classList.remove("hidden");
-document.getElementById("closeModal").onclick = () => modal.classList.add("hidden");
-document.getElementById("cancelAdd").onclick = () => modal.classList.add("hidden");
-
-// Handle form
-document.getElementById("itemForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const formData = new FormData(this);
-
-  const newItem = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-    category: formData.get("category"),
-    condition: formData.get("condition"),
-    contact: formData.get("contact"),
-    imageUrl: formData.get("imageUrl")
-  };
-
-  items.unshift(newItem);
-  renderItems();
-  modal.classList.add("hidden");
-  this.reset();
+// Mobile nav (simple)
+$(".nav-toggle")?.addEventListener("click", () => {
+  const nav = $(".nav");
+  if (!nav) return;
+  nav.style.display = nav.style.display === "flex" ? "none" : "flex";
 });
 
-// Search + filter + sort
-document.getElementById("searchInput").addEventListener("input", filterAndSort);
-document.getElementById("categoryFilter").addEventListener("change", filterAndSort);
-document.getElementById("sortSelect").addEventListener("change", filterAndSort);
+// ===== Impact counters (animate on view) =====
+const counters = $$(".stat-number");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.target, 10);
+    const dur = 1200; // ms
+    const start = performance.now();
 
-function filterAndSort() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const category = document.getElementById("categoryFilter").value;
-  const sort = document.getElementById("sortSelect").value;
+    const tick = (t0) => {
+      const p = Math.min(1, (t0 - start) / dur);
+      el.textContent = Math.floor(target * (0.1 + 0.9 * p)).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    observer.unobserve(el);
+  });
+}, { threshold: 0.4 });
+counters.forEach((c) => observer.observe(c));
 
-  let filtered = items.filter(i =>
-    i.title.toLowerCase().includes(search) ||
-    i.description.toLowerCase().includes(search)
-  );
-  if (category) filtered = filtered.filter(i => i.category === category);
+// ===== Stories carousel =====
+(() => {
+  const track = $(".carousel");
+  const prev = $(".stories .prev");
+  const next = $(".stories .next");
+  if (!track) return;
+  const slides = $$(".story", track);
+  let index = 0;
+  const go = (i) => {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${index * 100}%)`;
+  };
+  prev.addEventListener("click", () => go(index - 1));
+  next.addEventListener("click", () => go(index + 1));
+  // Auto-advance
+  setInterval(() => go(index + 1), 6000);
+})();
 
-  if (sort === "newest") filtered = filtered.reverse();
-  if (sort === "condition") {
-    const order = ["New", "Like New", "Good", "Fair"];
-    filtered.sort((a, b) => order.indexOf(a.condition) - order.indexOf(b.condition));
-  }
-
-  renderItems(filtered);
-}
+// ===== Marketplace data =====
+const catalog = [
+  { id: 1, name: "Wooden Desk", category: "Furniture", price: 0, condition: "Good", img: "https://images.unsplash.com/photo-1582582621959-48d3d4a8d7b3?q=80&w=800&auto=format&fit=crop", available: true },
+  { id: 2, name: "Desk Lamp", category: "Electronics", price: 0, condition: "Used", img: "https://images.unsplash.com/photo-1517957754642-d8237c4e0a69?q=80&w=800&auto=format&fit=crop", available: true },
+  { id: 3, name: "C Programming Book", category: "Books", price: 0, condition: "Like New", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop", available: true },
+  { id: 4, name: "Office Chair", category: "Furniture", price: 0, condition: "Used", img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?q=80&w=800&auto=format&fit=crop", available: false },
+  { id: 5, name: "Casual T-Shirt", category: "Clothes", price: 0, condition: "Good", img: "https://images.unsplash.com/photo-1520975916090-3105956dac38?q=80&w=800&auto=format&fit=crop", available: true },
+  { id: 6, name: "Geometry Set", category: "Stationery", price: 0, condition: "New", img: "https://images.unsplash.com/photo-1491841651911-c44c30c34548?q=80&
