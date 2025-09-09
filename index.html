@@ -71,6 +71,7 @@
           <div class="stat-label">Items Reused</div>
         </div>
       </article>
+
       <article class="stat">
         <div class="stat-icon">🌱</div>
         <div>
@@ -78,6 +79,7 @@
           <div class="stat-label">Kg Waste Saved</div>
         </div>
       </article>
+
       <article class="stat">
         <div class="stat-icon">💨</div>
         <div>
@@ -100,16 +102,57 @@
     </div>
   </section>
 
-  <!-- ===== STORIES ===== -->
+  <!-- ===== SUCCESS STORIES ===== -->
   <section id="stories" class="section container">
     <h2 class="section-title">Success Stories</h2>
-    <!-- carousel skipped for brevity -->
+
+    <div class="stories">
+      <button class="carousel-nav prev" aria-label="Previous story">←</button>
+
+      <div class="carousel">
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Smiling student">
+          <p>“I got a study chair for free instead of buying new — saved money & reduced waste!”</p>
+          <span class="byline">— Aarav</span>
+        </article>
+
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop" alt="Student holding a book">
+          <p>“Donated my old textbooks and helped juniors. Win-win for the planet.”</p>
+          <span class="byline">— Meera</span>
+        </article>
+
+        <article class="story">
+          <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?q=80&w=600&auto=format&fit=crop" alt="Desk with lamp">
+          <p>“Found a desk lamp that works perfectly. Reused ≠ second-best!”</p>
+          <span class="byline">— Rohan</span>
+        </article>
+      </div>
+
+      <button class="carousel-nav next" aria-label="Next story">→</button>
+    </div>
   </section>
 
   <!-- ===== AWARENESS HUB ===== -->
   <section id="awareness" class="section container">
     <h2 class="section-title">Awareness Hub</h2>
-    <!-- blog cards skipped for brevity -->
+    <div class="cards3">
+      <a class="blog-card" href="#">
+        <h3>Why Reusing is Better than Recycling</h3>
+        <p>Reusing keeps items in circulation longer, avoiding the energy of reprocessing.</p>
+        <span class="link">Read →</span>
+      </a>
+      <a class="blog-card" href="#">
+        <h3>5 Upcycling Hacks for Students</h3>
+        <p>Quick DIY ideas to give a second life to your everyday stuff.</p>
+        <span class="link">Read →</span>
+      </a>
+      <a class="blog-card" href="#">
+        <h3>How Waste Impacts Climate</h3>
+        <p>From landfills to methane emissions — here’s the big picture.</p>
+        <span class="link">Read →</span>
+      </a>
+    </div>
   </section>
 
   <!-- ===== MARKETPLACE ===== -->
@@ -117,10 +160,11 @@
     <div class="market-head">
       <h2 class="section-title">Marketplace</h2>
       <div class="searchbar">
-        <input id="searchInput" type="search" placeholder="Search items…" />
-        <button id="clearSearch" class="btn btn-soft">✕</button>
+        <input id="searchInput" type="search" placeholder="Search items…" aria-label="Search items" />
+        <button id="clearSearch" class="btn btn-soft" aria-label="Clear search">✕</button>
       </div>
     </div>
+
     <div class="market-wrap">
       <aside class="filters">
         <h3>Filters</h3>
@@ -129,9 +173,14 @@
         <label><input type="checkbox" class="f-cat" value="Furniture"> Furniture</label>
         <label><input type="checkbox" class="f-cat" value="Clothes"> Clothes</label>
         <label><input type="checkbox" class="f-cat" value="Stationery"> Stationery</label>
+        <hr>
+        <label><input type="checkbox" id="f-available" checked> Only available</label>
       </aside>
-      <!-- Items populated dynamically -->
-      <div class="items" id="marketplaceItems"></div>
+
+      <div class="items">
+        <!-- JS will populate items here -->
+      </div>
+
       <aside class="cart">
         <h3>Cart</h3>
         <ul id="cartList" class="cart-list"></ul>
@@ -143,26 +192,25 @@
 
   <!-- ===== LEADERBOARD ===== -->
   <section id="leaderboard" class="section container">
-    <h2 class="section-title">Top Contributors</h2>
-    <!-- leaderboard skipped for brevity -->
+    <h2 class="section-title">Top Contributors of the Month</h2>
+    <ol class="leaderboard">
+      <li><img src="https://i.pravatar.cc/80?img=1" alt=""><div><b>Ananya</b><span>Eco Hero</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=2" alt=""><div><b>Kabir</b><span>Green Saver</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=3" alt=""><div><b>Priya</b><span>Zero Waste Champ</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=4" alt=""><div><b>Dev</b><span>Community Donor</span></div></li>
+      <li><img src="https://i.pravatar.cc/80?img=5" alt=""><div><b>Neha</b><span>Reuse Rockstar</span></div></li>
+    </ol>
   </section>
 
-  <!-- ===== DONATE (Connected to Firebase) ===== -->
+  <!-- ===== DONATE ===== -->
   <section id="donate" class="section container">
     <h2 class="section-title">Donate an Item</h2>
-    <form id="donationForm" class="donate-form">
-      <input required type="text" id="name" placeholder="Your Name *">
-      <input required type="text" id="item" placeholder="Item Name *">
-      <select id="category" required>
-        <option value="">Select Category</option>
-        <option value="Books">Books</option>
-        <option value="Electronics">Electronics</option>
-        <option value="Furniture">Furniture</option>
-        <option value="Clothes">Clothes</option>
-        <option value="Stationery">Stationery</option>
-      </select>
-      <textarea id="description" rows="3" placeholder="Short description"></textarea>
-      <button class="btn btn-primary" type="submit">Submit Donation</button>
+    <form class="donate-form">
+      <input required type="text" placeholder="Item name *">
+      <input required type="text" placeholder="Category * (e.g., Books)">
+      <input type="text" placeholder="Condition (New/Good/Used)">
+      <textarea rows="3" placeholder="Short description"></textarea>
+      <button class="btn btn-primary">Submit</button>
     </form>
   </section>
 
@@ -184,62 +232,6 @@
     <div class="container tiny">© <span id="yr"></span> Reuse & Recycle Exchange</div>
   </footer>
 
-  <!-- ===== Firebase Script ===== -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCxZVLa8eLsx7kuQH1Fk4gg6xi6rXiAhFA",
-      authDomain: "reuse-and-recycle.firebaseapp.com",
-      projectId: "reuse-and-recycle",
-      storageBucket: "reuse-and-recycle.appspot.com",
-      messagingSenderId: "81703541937",
-      appId: "1:81703541937:web:23a0d979c87863de0cd690"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Handle form submit
-    document.getElementById("donationForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const item = document.getElementById("item").value;
-      const category = document.getElementById("category").value;
-      const description = document.getElementById("description").value;
-
-      try {
-        await addDoc(collection(db, "donations"), {
-          name, item, category, description,
-          timestamp: new Date()
-        });
-        alert("Donation submitted successfully!");
-        document.getElementById("donationForm").reset();
-        loadMarketplace();
-      } catch (err) {
-        console.error("Error adding document:", err);
-      }
-    });
-
-    // Load donations into marketplace
-    async function loadMarketplace() {
-      const querySnapshot = await getDocs(collection(db, "donations"));
-      let marketplace = document.getElementById("marketplaceItems");
-      marketplace.innerHTML = "";
-      querySnapshot.forEach((doc) => {
-        const d = doc.data();
-        marketplace.innerHTML += `
-          <div class="item-card">
-            <h3>${d.item}</h3>
-            <p>Donated by: ${d.name}</p>
-            <p>${d.description || ""}</p>
-            <span>Category: ${d.category}</span>
-          </div>
-        `;
-      });
-    }
-    loadMarketplace();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
