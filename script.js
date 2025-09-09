@@ -1,47 +1,86 @@
-// ===== DEMO ITEMS (Indian context) =====
-const demoItems = [
-  { name: "NCERT Physics Class 12", category: "Books" },
-  { name: "Indian Polity by Laxmikant", category: "Books" },
-  { name: "Old Redmi Phone", category: "Electronics" },
-  { name: "HP USB Mouse", category: "Electronics" },
-  { name: "Plastic Chair", category: "Furniture" },
-  { name: "Wooden Study Table", category: "Furniture" },
-  { name: "Blue Kurta", category: "Clothes" },
-  { name: "Cotton Saree", category: "Clothes" },
-  { name: "Classmate Notebooks", category: "Stationery" },
-  { name: "Geometry Box", category: "Stationery" }
-];
+// ===== Firebase Init =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ===== FUNCTION: Render Items =====
+// 🔹 Paste your Firebase config here
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_APP.firebaseapp.com",
+  projectId: "YOUR_APP",
+  storageBucket: "YOUR_APP.appspot.com",
+  messagingSenderId: "123456",
+  appId: "1:xxxx"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ===== State =====
+let allItems = [];
+
+// ===== Function: Load Items from Firestore =====
+async function loadItems() {
+  allItems = [];
+  const querySnapshot = await getDocs(collection(db, "items"));
+  querySnapshot.forEach(doc => {
+    allItems.push(doc.data());
+  });
+  renderItems(allItems);
+}
+
+// ===== Function: Render Items =====
 function renderItems(items) {
   const container = document.querySelector(".items");
   container.innerHTML = "";
+  if (items.length === 0) {
+    container.innerHTML = "<p>No items found.</p>";
+    return;
+  }
   items.forEach(item => {
     const card = document.createElement("div");
     card.className = "item-card";
-    card.innerHTML = `<h4>${item.name}</h4><p>${item.category}</p>`;
+    card.innerHTML = `
+      <h4>${item.name}</h4>
+      <p>${item.category}</p>
+      <small>${item.condition || ""}</small>
+    `;
     container.appendChild(card);
   });
 }
 
-// ===== FUNCTION: Show Category =====
-function showCategory(category) {
-  let filtered = demoItems.filter(i => i.category === category);
-
-  // Shuffle for randomness
-  filtered = filtered.sort(() => 0.5 - Math.random());
-
-  renderItems(filtered);
-  document.getElementById("marketplace").scrollIntoView({ behavior: "smooth" });
-}
-
-// ===== Event Listeners on Category Buttons =====
-document.querySelectorAll(".cat").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const cat = btn.getAttribute("data-filter");
-    showCategory(cat);
-  });
+// ===== Donate Form Submit =====
+document.querySelector(".donate-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const [name, category, condition, desc] = e.target;
+  try {
+    await addDoc(collection(db, "items"), {
+      name: name.value,
+      category: category.value,
+      condition: condition.value,
+      description: desc.value,
+      available: true
+    });
+    alert("Item donated successfully!");
+    e.target.reset();
+    loadItems();
+  } catch (err) {
+    console.error("Error adding document: ", err);
+  }
 });
 
-// ===== Initial Load: Show all items =====
-renderItems(demoItems);
+// ===== Search Function =====
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  const term = e.target.value.toLowerCase();
+  const filtered = allItems.filter(item =>
+    item.name.toLowerCase().includes(term) ||
+    item.category.toLowerCase().includes(term)
+  );
+  renderItems(filtered);
+});
+
+document.getElementById("clearSearch").addEventListener("click", () => {
+  document.getElementById("searchInput").value = "";
+  renderItems(allItems);
+});
+
+// ===== Init =====
+loadItems();
