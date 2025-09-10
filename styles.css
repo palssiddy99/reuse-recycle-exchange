@@ -276,7 +276,7 @@ header nav ul li a:hover {
 }
 
 .truck {
-  height: 80px;
+  height: 40px;
   position: absolute;
   left: -120px; /* start off-screen */
   animation: drive 6s linear infinite;
