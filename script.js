@@ -1,9 +1,9 @@
-// Dark mode
+// Dark mode toggle
 document.getElementById("darkToggle").addEventListener("change", () => {
   document.body.classList.toggle("dark-mode");
 });
 
-// Dummy donated products
+// Dummy products
 const products = [
   { name: "NCERT Physics Book", category: "Books" },
   { name: "Used Wooden Study Table", category: "Furniture" },
@@ -13,6 +13,7 @@ const products = [
   { name: "Plastic Chair", category: "Furniture" },
 ];
 
+// Render products
 const productGrid = document.getElementById("productGrid");
 function renderProducts(list) {
   productGrid.innerHTML = "";
@@ -56,25 +57,21 @@ function openCart() {
   document.getElementById("cartPanel").classList.add("active");
 }
 
-// Counters
-let itemsDonated = 0, usersJoined = 0, paper = 0, ewaste = 0, co2 = 0;
-setInterval(() => {
-  if (itemsDonated < 120) document.getElementById("itemsDonated").innerText = ++itemsDonated;
-  if (usersJoined < 45) document.getElementById("usersJoined").innerText = ++usersJoined;
-  if (paper < 200) document.getElementById("paperSaved").innerText = ++paper;
-  if (ewaste < 100) document.getElementById("ewasteReduced").innerText = ++ewaste;
-  if (co2 < 300) document.getElementById("co2Saved").innerText = ++co2;
-}, 50);
-
-// Donors (Indian names + donated items)
+// Dummy donors
 const donors = [
   { name: "Aarav Sharma", items: ["NCERT Physics Book", "Plastic Chair"] },
   { name: "Priya Patel", items: ["Dell Laptop (2018)", "English Novel - Chetan Bhagat"] },
   { name: "Rohan Verma", items: ["Men’s Kurta Set"] },
   { name: "Sneha Iyer", items: ["Used Wooden Study Table", "NCERT Physics Book"] },
   { name: "Aditya Mehra", items: ["Plastic Chair", "English Novel - Chetan Bhagat"] },
+  { name: "Ishita Nair", items: ["Math Reference Book", "Wooden Stool"] },
+  { name: "Kunal Joshi", items: ["Old Smartphone", "Headphones"] },
+  { name: "Meera Reddy", items: ["Saree", "Cooking Utensils"] },
+  { name: "Vikram Singh", items: ["Office Chair", "Keyboard"] },
+  { name: "Ananya Gupta", items: ["School Bag", "Story Books"] },
 ];
 
+// Leaderboard
 const donorList = document.getElementById("donorList");
 donors.forEach((d, i) => {
   const li = document.createElement("li");
@@ -82,6 +79,7 @@ donors.forEach((d, i) => {
   donorList.appendChild(li);
 });
 
+// Show donor items
 function showDonorItems(index) {
   const donor = donors[index];
   alert(`${donor.name} donated:\n- ${donor.items.join("\n- ")}`);
