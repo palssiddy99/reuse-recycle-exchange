@@ -1,4 +1,4 @@
-/* Reset */
+/* -------------------- RESET -------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@ body {
   line-height: 1.6;
 }
 
-/* Header */
+/* -------------------- HEADER -------------------- */
 header {
   display: flex;
   justify-content: space-between;
@@ -48,7 +48,7 @@ header nav ul li a:hover {
   color: #ffd700;
 }
 
-/* Hero Section */
+/* -------------------- HERO SECTION -------------------- */
 .hero {
   text-align: center;
   padding: 100px 20px 60px;
@@ -107,7 +107,7 @@ header nav ul li a:hover {
   background: #ffb700;
 }
 
-/* Categories */
+/* -------------------- CATEGORIES -------------------- */
 .categories {
   text-align: center;
   padding: 80px 20px;
@@ -141,7 +141,7 @@ header nav ul li a:hover {
   background: rgba(255,255,255,0.3);
 }
 
-/* Products Grid */
+/* -------------------- PRODUCTS -------------------- */
 .products {
   padding: 80px 20px;
   text-align: center;
@@ -201,7 +201,7 @@ header nav ul li a:hover {
   background: #ffb700;
 }
 
-/* About Section */
+/* -------------------- ABOUT -------------------- */
 .about {
   padding: 80px 20px;
   text-align: center;
@@ -228,7 +228,67 @@ header nav ul li a:hover {
   margin-bottom: 10px;
 }
 
-/* Contact Section */
+/* -------------------- DONATE & PICKUP -------------------- */
+.donate {
+  padding: 80px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  color: #333;
+  border-radius: 20px;
+  margin: 50px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.donate h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.donate p {
+  font-size: 20px;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+.donate-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background: #ffd700;
+  color: #333;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.donate-btn:hover {
+  background: #ffb700;
+  color: #fff;
+}
+
+/* Truck Animation */
+.truck-container {
+  position: relative;
+  height: 100px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+
+.truck {
+  height: 80px;
+  position: absolute;
+  left: -120px; /* start off-screen */
+  animation: drive 6s linear infinite;
+}
+
+@keyframes drive {
+  0% { left: -120px; }
+  50% { left: calc(50% - 40px); }
+  100% { left: 110%; }
+}
+
+/* -------------------- CONTACT -------------------- */
 .contact {
   padding: 80px 20px;
   text-align: center;
@@ -263,7 +323,7 @@ header nav ul li a:hover {
   background: #ffb700;
 }
 
-/* Footer */
+/* -------------------- FOOTER -------------------- */
 footer {
   text-align: center;
   padding: 40px 20px;
@@ -323,7 +383,7 @@ footer .socials {
   cursor: pointer;
 }
 
-/* Responsive */
+/* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 768px) {
   header nav ul {
     flex-direction: column;
@@ -340,5 +400,9 @@ footer .socials {
 
   #cartPanel {
     width: 100%;
+  }
+
+  .donate {
+    margin: 20px 10px;
   }
 }
