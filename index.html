@@ -9,12 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-
-<!-- Your Script -->
-<script src="script.js"></script>
 
 <body>
   <!-- ===== NAV / HEADER ===== -->
@@ -211,13 +205,9 @@
   <!-- ===== DONATE ===== -->
   <section id="donate" class="section container">
     <h2 class="section-title">Donate an Item</h2>
-    <form class="donate-form">
-      <input required type="text" placeholder="Item name *">
-      <input required type="text" placeholder="Category * (e.g., Books)">
-      <input type="text" placeholder="Condition (New/Good/Used)">
-      <textarea rows="3" placeholder="Short description"></textarea>
-      <button class="btn btn-primary">Submit</button>
-    </form>
+    <div class="donate-embed">
+      <iframe src="https://docs.google.com/forms/d/e/your-form-id/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
   </section>
 
   <!-- ===== CONTACT ===== -->
