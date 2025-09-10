@@ -1,86 +1,125 @@
-// ===== Firebase Init =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+// Demo dataset of items
+const demoItems = [
+  { id: 1, name: "Physics Book", category: "Books", condition: "Good", available: true },
+  { id: 2, name: "Laptop (Dell)", category: "Electronics", condition: "Used", available: true },
+  { id: 3, name: "Wooden Chair", category: "Furniture", condition: "Good", available: false },
+  { id: 4, name: "Hoodie", category: "Clothes", condition: "New", available: true },
+  { id: 5, name: "Pen Set", category: "Stationery", condition: "New", available: true },
+];
 
-// 🔹 Paste your Firebase config here
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_APP.firebaseapp.com",
-  projectId: "YOUR_APP",
-  storageBucket: "YOUR_APP.appspot.com",
-  messagingSenderId: "123456",
-  appId: "1:xxxx"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// DOM Elements
+const itemsContainer = document.querySelector(".items");
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearch");
+const filterCheckboxes = document.querySelectorAll(".f-cat");
+const availableCheckbox = document.getElementById("f-available");
 
-// ===== State =====
-let allItems = [];
+// Cart
+const cartList = document.getElementById("cartList");
+const cartEmpty = document.querySelector(".cart-empty");
+const checkoutBtn = document.getElementById("checkoutBtn");
+let cart = [];
 
-// ===== Function: Load Items from Firestore =====
-async function loadItems() {
-  allItems = [];
-  const querySnapshot = await getDocs(collection(db, "items"));
-  querySnapshot.forEach(doc => {
-    allItems.push(doc.data());
+// ===== RENDER ITEMS =====
+function renderItems() {
+  itemsContainer.innerHTML = "";
+  const searchTerm = searchInput.value.toLowerCase();
+
+  // Gather filters
+  const selectedCategories = Array.from(filterCheckboxes)
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+  const onlyAvailable = availableCheckbox.checked;
+
+  // Filter dataset
+  let filtered = demoItems.filter(item => {
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm);
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.category);
+    const matchesAvailability = !onlyAvailable || item.available;
+    return matchesSearch && matchesCategory && matchesAvailability;
   });
-  renderItems(allItems);
-}
 
-// ===== Function: Render Items =====
-function renderItems(items) {
-  const container = document.querySelector(".items");
-  container.innerHTML = "";
-  if (items.length === 0) {
-    container.innerHTML = "<p>No items found.</p>";
+  // Render
+  if (filtered.length === 0) {
+    itemsContainer.innerHTML = "<p>No items found.</p>";
     return;
   }
-  items.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-    card.innerHTML = `
+
+  filtered.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item-card";
+    div.innerHTML = `
       <h4>${item.name}</h4>
-      <p>${item.category}</p>
-      <small>${item.condition || ""}</small>
+      <p>${item.category} | ${item.condition}</p>
+      <button class="btn btn-soft" ${item.available ? "" : "disabled"}>${item.available ? "Add to Cart" : "Unavailable"}</button>
     `;
-    container.appendChild(card);
+
+    const btn = div.querySelector("button");
+    if (item.available) {
+      btn.addEventListener("click", () => addToCart(item));
+    }
+
+    itemsContainer.appendChild(div);
   });
 }
 
-// ===== Donate Form Submit =====
-document.querySelector(".donate-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const [name, category, condition, desc] = e.target;
-  try {
-    await addDoc(collection(db, "items"), {
-      name: name.value,
-      category: category.value,
-      condition: condition.value,
-      description: desc.value,
-      available: true
-    });
-    alert("Item donated successfully!");
-    e.target.reset();
-    loadItems();
-  } catch (err) {
-    console.error("Error adding document: ", err);
+// ===== CART FUNCTIONS =====
+function addToCart(item) {
+  if (!cart.includes(item)) {
+    cart.push(item);
+    updateCart();
+  }
+}
+
+function updateCart() {
+  cartList.innerHTML = "";
+  if (cart.length === 0) {
+    cartEmpty.style.display = "block";
+    return;
+  }
+
+  cartEmpty.style.display = "none";
+  cart.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.name;
+    cartList.appendChild(li);
+  });
+}
+
+checkoutBtn.addEventListener("click", () => {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+  } else {
+    alert("Proceeding to checkout with: " + cart.map(i => i.name).join(", "));
   }
 });
 
-// ===== Search Function =====
-document.getElementById("searchInput").addEventListener("input", (e) => {
-  const term = e.target.value.toLowerCase();
-  const filtered = allItems.filter(item =>
-    item.name.toLowerCase().includes(term) ||
-    item.category.toLowerCase().includes(term)
-  );
-  renderItems(filtered);
+// ===== SEARCH / FILTER EVENTS =====
+searchInput.addEventListener("input", renderItems);
+clearSearchBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  renderItems();
 });
+filterCheckboxes.forEach(cb => cb.addEventListener("change", renderItems));
+availableCheckbox.addEventListener("change", renderItems);
 
-document.getElementById("clearSearch").addEventListener("click", () => {
-  document.getElementById("searchInput").value = "";
-  renderItems(allItems);
+// Init
+renderItems();
+
+// ===== IMPACT COUNTER ANIMATION =====
+const counters = document.querySelectorAll(".stat-number");
+counters.forEach(counter => {
+  const update = () => {
+    const target = +counter.getAttribute("data-target");
+    const current = +counter.textContent;
+    const increment = Math.ceil(target / 100);
+
+    if (current < target) {
+      counter.textContent = current + increment;
+      setTimeout(update, 30);
+    } else {
+      counter.textContent = target;
+    }
+  };
+  update();
 });
-
-// ===== Init =====
-loadItems();
