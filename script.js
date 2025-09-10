@@ -1,10 +1,24 @@
-// Dark mode toggle
+// DARK MODE TOGGLE
 document.getElementById("darkToggle").addEventListener("change", () => {
-  document.body.classList.toggle("dark-mode");
+  document.body.classList.toggle("dark");
 });
 
-// Dummy products (will be replaced dynamically)
-const products = [
+// CART
+let cart = [];
+const cartPanel = document.getElementById("cartPanel");
+const cartItemsEl = document.getElementById("cartItems");
+document.getElementById("cartClose").onclick = () => cartPanel.classList.remove("open");
+document.getElementById("cartButton").addEventListener("click", () => cartPanel.classList.add("open"));
+function addToCart(itemName) {
+  cart.push(itemName);
+  renderCart();
+}
+function renderCart() {
+  cartItemsEl.innerHTML = cart.map(c => `<p>${c}</p>`).join("");
+}
+
+// DUMMY PRODUCTS
+let products = [
   { name: "NCERT Physics Book", category: "Books" },
   { name: "Used Wooden Study Table", category: "Furniture" },
   { name: "Dell Laptop (2018)", category: "Electronics" },
@@ -13,7 +27,7 @@ const products = [
   { name: "Plastic Chair", category: "Furniture" },
 ];
 
-// Render products
+// RENDER PRODUCTS
 const productGrid = document.getElementById("productGrid");
 function renderProducts(list) {
   productGrid.innerHTML = "";
@@ -28,60 +42,43 @@ function renderProducts(list) {
     productGrid.appendChild(div);
   });
 }
-renderProducts(products);
+renderProducts(products); // initially render dummy products
 
-// Dynamic Load from Google Form Sheet
-const sheetURL = "https://script.google.com/macros/s/AKfycbxsKHPd_zkhOeoWsAVJ9H85WrFajMyyhmJnbnmLs3y12owT87x76BE3nOuPsg6jcFOhcg/exec"; // Replace with your Apps Script URL
+// SEARCH PRODUCTS
+document.getElementById("searchInput").addEventListener("input", () => {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  renderProducts(products.filter(p => p.name.toLowerCase().includes(query)));
+});
+
+// CATEGORY FILTER
+function showCategory(cat) {
+  renderProducts(products.filter(p => p.category === cat));
+}
+
+// DYNAMIC LOAD FROM GOOGLE FORM SHEET
+const sheetURL = "https://script.google.com/macros/s/AKfycbxsKHPd_zkhOeoWsAVJ9H85WrFajMyyhmJnbnmLs3y12owT87x76BE3nOuPsg6jcFOhcg/exec"; // replace with deployed Apps Script URL
 async function loadDonatedItems() {
   try {
     const res = await fetch(sheetURL);
     const data = await res.json();
     const donatedItems = data.map(item => ({
-      name: item["Product Name"],       // Match your sheet column
-      category: item["Category"]     // Match your sheet column
+      name: item["Product Name"],   // match your sheet column exactly
+      category: item["Category"] // match your sheet column
     }));
-    renderProducts(donatedItems);
+    products = donatedItems; // replace dummy products with form submissions
+    renderProducts(products);
   } catch (err) {
     console.error("Failed to load donated items:", err);
   }
 }
 loadDonatedItems();
 
-// Search
-function searchProducts() {
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
-}
-
-// Category filter
-function showCategory(cat) {
-  renderProducts(products.filter(p => p.category === cat));
-}
-
-// Cart
-let cart = [];
-function addToCart(item) {
-  cart.push(item);
-  updateCart();
-  openCart();
-}
-function updateCart() {
-  document.getElementById("cartItems").innerHTML = cart.map(c => `<p>${c}</p>`).join("");
-}
-document.getElementById("cartClose").onclick = () => {
-  document.getElementById("cartPanel").classList.remove("active");
-};
-function openCart() {
-  document.getElementById("cartPanel").classList.add("active");
-}
-document.getElementById("cartButton").addEventListener("click", openCart);
-
-// Impact & Counters (dummy numbers already in HTML)
+// IMPACT COUNTERS
 function animateCounter(id) {
   const el = document.getElementById(id);
-  let target = parseInt(el.dataset.target);
+  const target = parseInt(el.dataset.target);
   let count = 0;
-  let step = Math.ceil(target / 100);
+  const step = Math.ceil(target / 100);
   const interval = setInterval(() => {
     count += step;
     if (count >= target) {
@@ -94,7 +91,7 @@ function animateCounter(id) {
 }
 ["itemsDonated","usersJoined","paperSaved","ewasteReduced","co2Saved"].forEach(animateCounter);
 
-// Leaderboard dummy members
+// LEADERBOARD
 const donors = [
   { name: "Rahul Sharma", items: 14 },
   { name: "Priya Patel", items: 12 },
