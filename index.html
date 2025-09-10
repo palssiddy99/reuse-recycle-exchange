@@ -5,138 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reuse & Recycle Exchange</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header -->
   <header>
-    <h1>♻️ Reuse & Recycle Exchange</h1>
+    <h1>Reuse & Recycle Exchange</h1>
     <nav>
-      <a href="#items">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <input type="text" id="searchInput" placeholder="Search items...">
+      <button id="searchBtn">Search</button>
+      <div id="cartBtn">Cart (<span id="cartCount">0</span>)</div>
     </nav>
-    <div class="actions">
-      <input type="text" id="search" placeholder="Search for items..." onkeyup="searchItems()">
-      <button id="cart-btn" onclick="openCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
-    </div>
   </header>
 
-  <!-- Main Section -->
-  <main>
-    <!-- Items -->
-    <section id="items">
-      <h2>Available Items</h2>
-      <div class="grid" id="item-list">
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1582582494700-7ea4c2a43a5d?w=600" alt="Study Table">
-          <h3>Study Table</h3>
-          <p>Furniture</p>
-          <button onclick="addToCart('Study Table')">Add to Cart</button>
-        </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1616627985662-45a9f307ef07?w=600" alt="Laptop Bag">
-          <h3>Laptop Bag</h3>
-          <p>Accessories</p>
-          <button onclick="addToCart('Laptop Bag')">Add to Cart</button>
-        </div>
-        <div class="card">
-          <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600" alt="Engineering Books">
-          <h3>Engineering Books</h3>
-          <p>Books</p>
-          <button onclick="addToCart('Engineering Books')">Add to Cart</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Us -->
-    <section id="about">
-      <h2>About Us</h2>
-      <p>
-        Welcome to the <b>Reuse & Recycle Exchange</b> — a community-driven platform 
-        where students can donate, exchange, and reuse items instead of throwing them away.  
-        Our goal: <b>reduce waste, save money, and protect the planet 🌍</b>.
-      </p>
-    </section>
-
-    <!-- Contact Us -->
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <p>We’d love to hear from you! Get in touch via the form below:</p>
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Message" required></textarea>
-        <button type="submit" class="send-btn">Send Message</button>
-      </form>
-      <div class="socials">
-        <a href="#"><i class="fa-brands fa-instagram"></i> Instagram</a>
-        <a href="mailto:example@gmail.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
-      </div>
-    </section>
-  </main>
-
-  <!-- Cart Modal -->
-  <div id="cart-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeCart()">&times;</span>
-      <h2>Your Cart</h2>
-      <ul id="cart-items"></ul>
+  <section id="categories">
+    <h2>Categories</h2>
+    <div class="category-list">
+      <button class="category" data-category="books">Books</button>
+      <button class="category" data-category="electronics">Electronics</button>
+      <button class="category" data-category="clothes">Clothes</button>
+      <button class="category" data-category="toys">Toys</button>
     </div>
-  </div>
+  </section>
 
-  <!-- Footer -->
+  <section id="itemsSection">
+    <h2>Items</h2>
+    <div id="itemsContainer" class="items-container"></div>
+  </section>
+
+  <section id="cartSection" class="hidden">
+    <h2>Your Cart</h2>
+    <div id="cartItems" class="items-container"></div>
+    <button id="checkoutBtn">Checkout</button>
+    <button id="closeCartBtn">Close</button>
+  </section>
+
   <footer>
-    <p>© 2025 Reuse & Recycle Exchange. All rights reserved.</p>
+    <p>🌍 Reduce waste, save money, and protect the planet!</p>
   </footer>
 
-  <!-- JS -->
-  <script>
-    let cart = [];
-
-    function addToCart(item) {
-      cart.push(item);
-      document.getElementById("cart-count").innerText = cart.length;
-      renderCart();
-    }
-
-    function renderCart() {
-      let cartList = document.getElementById("cart-items");
-      cartList.innerHTML = "";
-      cart.forEach((item, index) => {
-        let li = document.createElement("li");
-        li.textContent = item + " ";
-        let removeBtn = document.createElement("button");
-        removeBtn.textContent = "Remove";
-        removeBtn.className = "remove";
-        removeBtn.onclick = () => { removeFromCart(index); };
-        li.appendChild(removeBtn);
-        cartList.appendChild(li);
-      });
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      document.getElementById("cart-count").innerText = cart.length;
-      renderCart();
-    }
-
-    function openCart() {
-      document.getElementById("cart-modal").style.display = "flex";
-    }
-
-    function closeCart() {
-      document.getElementById("cart-modal").style.display = "none";
-    }
-
-    function searchItems() {
-      let input = document.getElementById("search").value.toLowerCase();
-      let cards = document.querySelectorAll(".card");
-      cards.forEach(card => {
-        let text = card.innerText.toLowerCase();
-        card.style.display = text.includes(input) ? "block" : "none";
-      });
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
