@@ -31,7 +31,8 @@ header h1 {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 5cm;
+  justify-content: space-around; /* Spreads links evenly */
+  width: 100%; /* Make sure it uses full space */
 }
 
 nav a {
