@@ -1,227 +1,88 @@
-// ===========================
-// CONFIG
-// ===========================
+// Dark mode
+document.getElementById("darkToggle").addEventListener("change", () => {
+  document.body.classList.toggle("dark-mode");
+});
 
-// Replace this with your actual published Google Sheet CSV link
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-12345/pub?output=csv";
+// Dummy donated products
+const products = [
+  { name: "NCERT Physics Book", category: "Books" },
+  { name: "Used Wooden Study Table", category: "Furniture" },
+  { name: "Dell Laptop (2018)", category: "Electronics" },
+  { name: "Men’s Kurta Set", category: "Clothes" },
+  { name: "English Novel - Chetan Bhagat", category: "Books" },
+  { name: "Plastic Chair", category: "Furniture" },
+];
 
-// ===========================
-// LOAD DONATED ITEMS
-// ===========================
-async function loadDonatedItems() {
-  try {
-    const response = await fetch(sheetURL);
-    const data = await response.text();
-    const rows = data.split("\n").slice(1); // Skip header row
-
-    const grid = document.getElementById("productGrid");
-    grid.innerHTML = "";
-
-    rows.forEach(row => {
-      const cols = row.split(",");
-      if (cols.length >= 3) {
-        const name = cols[0].trim();
-        const category = cols[1].trim();
-        const img = cols[2].trim() || "https://i.imgur.com/placeholder.png";
-
-        if (name) {
-          const div = document.createElement("div");
-          div.classList.add("product");
-          div.innerHTML = `
-            <img src="${img}" alt="${name}">
-            <h3>${name}</h3>
-            <p>Category: ${category}</p>
-            <button onclick="addToCart('${name}')">Add to Cart</button>
-          `;
-          grid.appendChild(div);
-        }
-      }
-    });
-
-    // Update impact tracker after items load
-    updateImpact();
-
-  } catch (error) {
-    console.error("Error loading donated items:", error);
-  }
-}
-
-// ===========================
-// SEARCH FUNCTION
-// ===========================
-function searchProducts() {
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const products = document.querySelectorAll(".product");
-
-  products.forEach(product => {
-    const title = product.querySelector("h3").innerText.toLowerCase();
-    if (title.includes(input)) {
-      product.style.display = "block";
-    } else {
-      product.style.display = "none";
-    }
-  });
-}
-
-// ===========================
-// FILTER BY CATEGORY
-// ===========================
-function showCategory(category) {
-  const products = document.querySelectorAll(".product");
-  products.forEach(product => {
-    const text = product.querySelector("p").innerText;
-    if (text.includes(category)) {
-      product.style.display = "block";
-    } else {
-      product.style.display = "none";
-    }
-  });
-}
-
-// ===========================
-// CART SYSTEM
-// ===========================
-let cart = [];
-
-function addToCart(itemName) {
-  cart.push(itemName);
-  alert(itemName + " added to cart!");
-  renderCart();
-}
-
-function renderCart() {
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<p>Your cart is empty.</p>";
-    return;
-  }
-
-  cart.forEach((item, index) => {
+const productGrid = document.getElementById("productGrid");
+function renderProducts(list) {
+  productGrid.innerHTML = "";
+  list.forEach(p => {
     const div = document.createElement("div");
-    div.classList.add("cart-item");
+    div.className = "product-card";
     div.innerHTML = `
-      <span>${item}</span>
-      <button onclick="removeFromCart(${index})">Remove</button>
+      <h3>${p.name}</h3>
+      <p>${p.category}</p>
+      <button onclick="addToCart('${p.name}')">Add to Cart</button>
     `;
-    cartItems.appendChild(div);
+    productGrid.appendChild(div);
   });
 }
+renderProducts(products);
 
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  renderCart();
+// Search
+function searchProducts() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
 }
 
-// ===========================
-// CART PANEL TOGGLE
-// ===========================
-const cartPanel = document.getElementById("cartPanel");
-const cartClose = document.getElementById("cartClose");
-
-if (cartClose) {
-  cartClose.addEventListener("click", () => {
-    cartPanel.style.display = "none";
-  });
+// Category filter
+function showCategory(cat) {
+  renderProducts(products.filter(p => p.category === cat));
 }
 
-function openCart() {
-  cartPanel.style.display = "block";
-  renderCart();
+// Cart
+let cart = [];
+function addToCart(item) {
+  cart.push(item);
+  updateCart();
 }
-
-// ===========================
-// COUNTERS (ABOUT SECTION)
-// ===========================
-function animateCounters() {
-  let donatedCount = 0;
-  let usersCount = 0;
-  const donatedTarget = 120; // Example number
-  const usersTarget = 75;
-
-  const donatedInterval = setInterval(() => {
-    if (donatedCount < donatedTarget) {
-      donatedCount++;
-      document.getElementById("itemsDonated").innerText = donatedCount;
-    } else {
-      clearInterval(donatedInterval);
-    }
-  }, 30);
-
-  const usersInterval = setInterval(() => {
-    if (usersCount < usersTarget) {
-      usersCount++;
-      document.getElementById("usersJoined").innerText = usersCount;
-    } else {
-      clearInterval(usersInterval);
-    }
-  }, 40);
+function updateCart() {
+  document.getElementById("cartItems").innerHTML = cart.map(c => `<p>${c}</p>`).join("");
 }
-
-// ===========================
-// IMPACT TRACKER
-// ===========================
-function updateImpact() {
-  const products = document.querySelectorAll(".product");
-  let paper = 0, ewaste = 0, co2 = 0;
-
-  products.forEach(p => {
-    const category = p.querySelector("p").innerText.toLowerCase();
-    if (category.includes("book")) paper += 1;
-    if (category.includes("electronic")) ewaste += 5;
-    co2 += 2;
-  });
-
-  document.getElementById("paperSaved").innerText = paper;
-  document.getElementById("ewasteReduced").innerText = ewaste;
-  document.getElementById("co2Saved").innerText = co2;
-}
-
-// ===========================
-// LEADERBOARD
-// ===========================
-function updateLeaderboard() {
-  const donors = [
-    { name: "Aarav", items: 12 },
-    { name: "Meera", items: 9 },
-    { name: "Rahul", items: 7 },
-    { name: "Sneha", items: 5 }
-  ];
-
-  const list = document.getElementById("donorList");
-  list.innerHTML = "";
-
-  donors.sort((a, b) => b.items - a.items);
-  donors.forEach(d => {
-    const li = document.createElement("li");
-    li.innerText = `${d.name} — ${d.items} items`;
-    list.appendChild(li);
-  });
-}
-
-// ===========================
-// DARK MODE
-// ===========================
-const toggle = document.getElementById("darkToggle");
-
-if (toggle) {
-  toggle.addEventListener("change", () => {
-    document.body.classList.toggle("dark-mode", toggle.checked);
-    localStorage.setItem("darkMode", toggle.checked);
-  });
-
-  if (localStorage.getItem("darkMode") === "true") {
-    toggle.checked = true;
-    document.body.classList.add("dark-mode");
-  }
-}
-
-// ===========================
-// INIT
-// ===========================
-window.onload = function () {
-  loadDonatedItems();
-  animateCounters();
-  updateLeaderboard();
+document.getElementById("cartClose").onclick = () => {
+  document.getElementById("cartPanel").classList.remove("active");
 };
+function openCart() {
+  document.getElementById("cartPanel").classList.add("active");
+}
+
+// Counters
+let itemsDonated = 0, usersJoined = 0, paper = 0, ewaste = 0, co2 = 0;
+setInterval(() => {
+  if (itemsDonated < 120) document.getElementById("itemsDonated").innerText = ++itemsDonated;
+  if (usersJoined < 45) document.getElementById("usersJoined").innerText = ++usersJoined;
+  if (paper < 200) document.getElementById("paperSaved").innerText = ++paper;
+  if (ewaste < 100) document.getElementById("ewasteReduced").innerText = ++ewaste;
+  if (co2 < 300) document.getElementById("co2Saved").innerText = ++co2;
+}, 50);
+
+// Donors (Indian names + donated items)
+const donors = [
+  { name: "Aarav Sharma", items: ["NCERT Physics Book", "Plastic Chair"] },
+  { name: "Priya Patel", items: ["Dell Laptop (2018)", "English Novel - Chetan Bhagat"] },
+  { name: "Rohan Verma", items: ["Men’s Kurta Set"] },
+  { name: "Sneha Iyer", items: ["Used Wooden Study Table", "NCERT Physics Book"] },
+  { name: "Aditya Mehra", items: ["Plastic Chair", "English Novel - Chetan Bhagat"] },
+];
+
+const donorList = document.getElementById("donorList");
+donors.forEach((d, i) => {
+  const li = document.createElement("li");
+  li.innerHTML = `<span onclick="showDonorItems(${i})">${d.name}</span>`;
+  donorList.appendChild(li);
+});
+
+function showDonorItems(index) {
+  const donor = donors[index];
+  alert(`${donor.name} donated:\n- ${donor.items.join("\n- ")}`);
+}
