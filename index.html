@@ -62,8 +62,8 @@
        where students donate, exchange, and reuse items instead of throwing them away.  
        Our mission: <b>reduce waste, save money, and protect the planet 🌍</b>.</p>
     <div class="counters">
-      <div><span id="itemsDonated">650</span><p>Items Donated</p></div>
-      <div><span id="usersJoined">120</span><p>Users Joined</p></div>
+      <div><span id="itemsDonated" data-target="650">0</span><p>Items Donated</p></div>
+      <div><span id="usersJoined" data-target="120">0</span><p>Users Joined</p></div>
     </div>
   </section>
 
@@ -81,9 +81,9 @@
   <section id="impact" class="impact">
     <h2>Our Collective Impact 🌍</h2>
     <div class="impact-stats">
-      <div><span id="paperSaved">1500</span> kg Paper Saved</div>
-      <div><span id="ewasteReduced">850</span> kg E-Waste Reduced</div>
-      <div><span id="co2Saved">2400</span> kg CO₂ Saved</div>
+      <div><span id="paperSaved" data-target="1500">0</span> kg Paper Saved</div>
+      <div><span id="ewasteReduced" data-target="850">0</span> kg E-Waste Reduced</div>
+      <div><span id="co2Saved" data-target="2400">0</span> kg CO₂ Saved</div>
     </div>
   </section>
 
@@ -108,7 +108,7 @@
   <footer>
     <p>© 2025 Reuse & Recycle Exchange | Built with ❤️ for a greener tomorrow</p>
     <div class="socials">
-      🌍 📘 🐦 📸
+      <a href="#">🌍</a> <a href="#">📘</a> <a href="#">🐦</a> <a href="#">📸</a>
     </div>
   </footer>
 
@@ -119,6 +119,9 @@
     <div id="cartItems"></div>
     <button class="donate-btn">Checkout</button>
   </div>
+
+  <!-- FLOATING CART BUTTON -->
+  <button id="cartButton">🛒</button>
 
   <script src="script.js"></script>
 </body>
