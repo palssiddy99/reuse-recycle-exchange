@@ -188,17 +188,59 @@ nav ul li a {
 /* Leaderboard */
 .leaderboard {
   text-align: center;
-  padding: 40px 20px;
-  background: #f0f8ff;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #f9f9f9, #e6f7ff);
+  border-top: 3px solid #0077b6;
+  border-bottom: 3px solid #0077b6;
 }
+
+.leaderboard h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #0077b6;
+}
+
 .leaderboard ol {
   list-style: none;
   padding: 0;
+  max-width: 500px;
+  margin: 0 auto;
 }
+
 .leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
   margin: 10px 0;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
   font-size: 1.1rem;
+  transition: transform 0.2s;
 }
+
+.leaderboard li:hover {
+  transform: scale(1.03);
+}
+
+.donor-rank {
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-right: 10px;
+}
+
+.donor-name {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+}
+
+.donor-items {
+  color: #28a745;
+  font-weight: bold;
+}
+
 
 /* Contact */
 .contact {
