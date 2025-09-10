@@ -3,7 +3,7 @@
 // ===========================
 
 // Replace this with your actual published Google Sheet CSV link
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnN3pKJweVkJWkw-nx-GPJIBsKAObM489cSBcydSALG8MhvWEFeB8AnTTAtyH3Q1IOKSWHDX8kX6PF/pub?output=csv";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-12345/pub?output=csv";
 
 // ===========================
 // LOAD DONATED ITEMS
@@ -37,6 +37,10 @@ async function loadDonatedItems() {
         }
       }
     });
+
+    // Update impact tracker after items load
+    updateImpact();
+
   } catch (error) {
     console.error("Error loading donated items:", error);
   }
@@ -156,9 +160,68 @@ function animateCounters() {
 }
 
 // ===========================
+// IMPACT TRACKER
+// ===========================
+function updateImpact() {
+  const products = document.querySelectorAll(".product");
+  let paper = 0, ewaste = 0, co2 = 0;
+
+  products.forEach(p => {
+    const category = p.querySelector("p").innerText.toLowerCase();
+    if (category.includes("book")) paper += 1;
+    if (category.includes("electronic")) ewaste += 5;
+    co2 += 2;
+  });
+
+  document.getElementById("paperSaved").innerText = paper;
+  document.getElementById("ewasteReduced").innerText = ewaste;
+  document.getElementById("co2Saved").innerText = co2;
+}
+
+// ===========================
+// LEADERBOARD
+// ===========================
+function updateLeaderboard() {
+  const donors = [
+    { name: "Aarav", items: 12 },
+    { name: "Meera", items: 9 },
+    { name: "Rahul", items: 7 },
+    { name: "Sneha", items: 5 }
+  ];
+
+  const list = document.getElementById("donorList");
+  list.innerHTML = "";
+
+  donors.sort((a, b) => b.items - a.items);
+  donors.forEach(d => {
+    const li = document.createElement("li");
+    li.innerText = `${d.name} — ${d.items} items`;
+    list.appendChild(li);
+  });
+}
+
+// ===========================
+// DARK MODE
+// ===========================
+const toggle = document.getElementById("darkToggle");
+
+if (toggle) {
+  toggle.addEventListener("change", () => {
+    document.body.classList.toggle("dark-mode", toggle.checked);
+    localStorage.setItem("darkMode", toggle.checked);
+  });
+
+  if (localStorage.getItem("darkMode") === "true") {
+    toggle.checked = true;
+    document.body.classList.add("dark-mode");
+  }
+}
+
+// ===========================
 // INIT
 // ===========================
 window.onload = function () {
   loadDonatedItems();
   animateCounters();
+  updateLeaderboard();
 };
