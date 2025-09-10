@@ -8,39 +8,79 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <h1>Reuse & Recycle Exchange</h1>
+    <div class="logo">♻ Reuse & Recycle Exchange</div>
     <nav>
-      <input type="text" id="searchInput" placeholder="Search items...">
-      <button id="searchBtn">Search</button>
-      <div id="cartBtn">Cart (<span id="cartCount">0</span>)</div>
+      <ul>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#cart" id="cartBtn">Cart 🛒<span id="cartCount">0</span></a></li>
+      </ul>
     </nav>
   </header>
 
-  <section id="categories">
-    <h2>Categories</h2>
-    <div class="category-list">
-      <button class="category" data-category="books">Books</button>
-      <button class="category" data-category="electronics">Electronics</button>
-      <button class="category" data-category="clothes">Clothes</button>
-      <button class="category" data-category="toys">Toys</button>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Reduce. Reuse. Recycle. ♻</h1>
+    <p>Discover, donate, and exchange items while saving the planet 🌍</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search items...">
+      <button onclick="searchItems()">Search</button>
     </div>
   </section>
 
-  <section id="itemsSection">
-    <h2>Items</h2>
-    <div id="itemsContainer" class="items-container"></div>
+  <!-- Categories -->
+  <section id="categories" class="categories">
+    <h2>Popular Categories</h2>
+    <div class="category-cards">
+      <div class="card" onclick="showCategory('Books')">Books</div>
+      <div class="card" onclick="showCategory('Clothes')">Clothes</div>
+      <div class="card" onclick="showCategory('Electronics')">Electronics</div>
+      <div class="card" onclick="showCategory('Toys')">Toys</div>
+      <div class="card" onclick="showCategory('Furniture')">Furniture</div>
+    </div>
   </section>
 
-  <section id="cartSection" class="hidden">
-    <h2>Your Cart</h2>
-    <div id="cartItems" class="items-container"></div>
-    <button id="checkoutBtn">Checkout</button>
-    <button id="closeCartBtn">Close</button>
+  <!-- Products -->
+  <section id="products" class="products">
+    <h2>Trending Items</h2>
+    <div class="product-grid" id="productGrid">
+      <!-- Products populated via JS -->
+    </div>
   </section>
 
+  <!-- About Us -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>Welcome to <b>Reuse & Recycle Exchange</b>, a community-driven platform 
+       where students donate, exchange, and reuse items instead of throwing them away.  
+       Our mission: <b>reduce waste, save money, and protect the planet 🌍</b>.</p>
+    <div class="counters">
+      <div><span id="itemsDonated">0</span><p>Items Donated</p></div>
+      <div><span id="usersJoined">0</span><p>Users Joined</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    <p>🌍 Reduce waste, save money, and protect the planet!</p>
+    <p>&copy; 2025 Reuse & Recycle Exchange. All rights reserved.</p>
+    <div class="socials">
+      <a href="#">Instagram</a> | <a href="#">Facebook</a> | <a href="#">Twitter</a>
+    </div>
   </footer>
 
   <script src="script.js"></script>
