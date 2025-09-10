@@ -1,107 +1,90 @@
-// Demo items with proper placeholder images
-const items = [
-  { name: "Mathematics Book", category: "books", image: "https://via.placeholder.com/150?text=Mathematics+Book" },
-  { name: "Science Book", category: "books", image: "https://via.placeholder.com/150?text=Science+Book" },
-  { name: "Laptop", category: "electronics", image: "https://via.placeholder.com/150?text=Laptop" },
-  { name: "Headphones", category: "electronics", image: "https://via.placeholder.com/150?text=Headphones" },
-  { name: "T-Shirt", category: "clothes", image: "https://via.placeholder.com/150?text=T-Shirt" },
-  { name: "Jeans", category: "clothes", image: "https://via.placeholder.com/150?text=Jeans" },
-  { name: "Toy Car", category: "toys", image: "https://via.placeholder.com/150?text=Toy+Car" },
-  { name: "Doll", category: "toys", image: "https://via.placeholder.com/150?text=Doll" }
+// -------------------- DATA --------------------
+const products = [
+  { name: "Maths Textbook", category: "Books", price: 120, img: "https://images.unsplash.com/photo-1581091012184-7a48b0b6fa0e" },
+  { name: "Laptop Dell Inspiron", category: "Electronics", price: 35000, img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3" },
+  { name: "Kids T-shirt", category: "Clothes", price: 250, img: "https://images.unsplash.com/photo-1602810318851-8a5cb11a2d0e" },
+  { name: "Wooden Chair", category: "Furniture", price: 1500, img: "https://images.unsplash.com/photo-1567016558829-4cce9b6f5932" },
+  { name: "Toy Car", category: "Toys", price: 400, img: "https://images.unsplash.com/photo-1618354692346-7de6890c43e6" },
+  { name: "English Novel", category: "Books", price: 200, img: "https://images.unsplash.com/photo-1512820790803-83ca734da794" },
+  { name: "Headphones Sony", category: "Electronics", price: 2500, img: "https://images.unsplash.com/photo-1580894908361-1b3d1d0f2f43" },
+  { name: "Jeans", category: "Clothes", price: 600, img: "https://images.unsplash.com/photo-1602810318851-8a5cb11a2d0e" },
+  { name: "Study Table", category: "Furniture", price: 2000, img: "https://images.unsplash.com/photo-1598300053893-c7cb0418b197" },
+  { name: "Action Figure", category: "Toys", price: 500, img: "https://images.unsplash.com/photo-1618354692346-7de6890c43e6" },
 ];
 
+// Cart
 let cart = [];
 
-// DOM Elements
-const itemsContainer = document.getElementById("itemsContainer");
+// -------------------- DOM --------------------
+const productGrid = document.getElementById("productGrid");
 const cartCount = document.getElementById("cartCount");
-const cartSection = document.getElementById("cartSection");
-const cartItems = document.getElementById("cartItems");
+const itemsDonated = document.getElementById("itemsDonated");
+const usersJoined = document.getElementById("usersJoined");
 
-// Render items
-function renderItems(list) {
-  itemsContainer.innerHTML = "";
-  if(list.length === 0) {
-    itemsContainer.innerHTML = "<p>No items found.</p>";
-    return;
-  }
-  list.forEach(item => {
+// -------------------- FUNCTIONS --------------------
+
+// Display products
+function displayProducts(list) {
+  productGrid.innerHTML = "";
+  list.forEach((p, index) => {
     const card = document.createElement("div");
-    card.className = "item-card";
+    card.className = "product-card";
     card.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <h3>${item.name}</h3>
-      <button onclick="addToCart('${item.name}')">Add to Cart</button>
+      <img src="${p.img}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>₹${p.price}</p>
+      <button onclick="addToCart(${index})">Add to Cart</button>
     `;
-    itemsContainer.appendChild(card);
+    productGrid.appendChild(card);
   });
 }
 
-// Add to cart
-function addToCart(itemName) {
-  const item = items.find(i => i.name === itemName);
-  cart.push(item);
+// Add to Cart
+function addToCart(index) {
+  cart.push(products[index]);
   cartCount.textContent = cart.length;
-}
-
-// Render cart
-function renderCart() {
-  cartItems.innerHTML = "";
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<p>Your cart is empty.</p>";
-    return;
-  }
-  cart.forEach((item, index) => {
-    const card = document.createElement("div");
-    card.className = "item-card";
-    card.innerHTML = `
-      <img src="${item.image}" alt="${item.name}">
-      <h3>${item.name}</h3>
-      <button onclick="removeFromCart(${index})">Remove</button>
-    `;
-    cartItems.appendChild(card);
-  });
-}
-
-// Remove from cart
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  cartCount.textContent = cart.length;
-  renderCart();
+  alert(`${products[index].name} added to cart!`);
 }
 
 // Category filter
-document.querySelectorAll(".category").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const category = btn.dataset.category;
-    const filtered = items.filter(item => item.category === category);
-    renderItems(filtered);
-  });
-});
+function showCategory(cat) {
+  const filtered = products.filter(p => p.category === cat);
+  displayProducts(filtered);
+}
 
-// Search filter
-document.getElementById("searchBtn").addEventListener("click", () => {
+// Search
+function searchItems() {
   const query = document.getElementById("searchInput").value.toLowerCase();
-  const filtered = items.filter(item => item.name.toLowerCase().includes(query));
-  renderItems(filtered);
-});
+  const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+  displayProducts(filtered);
+}
 
-// Cart buttons
-document.getElementById("cartBtn").addEventListener("click", () => {
-  renderCart();
-  cartSection.classList.remove("hidden");
-});
+// -------------------- COUNTERS ANIMATION --------------------
+let donated = 125; // example
+let users = 75;    // example
 
-document.getElementById("closeCartBtn").addEventListener("click", () => {
-  cartSection.classList.add("hidden");
-});
+function animateCounter(elem, target) {
+  let count = 0;
+  const step = Math.ceil(target / 100);
+  const interval = setInterval(() => {
+    count += step;
+    if(count >= target) {
+      count = target;
+      clearInterval(interval);
+    }
+    elem.textContent = count;
+  }, 20);
+}
 
-document.getElementById("checkoutBtn").addEventListener("click", () => {
-  alert("Checkout successful! Thank you for reusing & recycling 🌍");
-  cart = [];
-  cartCount.textContent = 0;
-  renderCart();
-});
+animateCounter(itemsDonated, donated);
+animateCounter(usersJoined, users);
 
-// Initial render
-renderItems(items);
+// -------------------- INIT --------------------
+displayProducts(products);
+
+// -------------------- CONTACT FORM --------------------
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Thank you! Your message has been sent.");
+  this.reset();
+});
