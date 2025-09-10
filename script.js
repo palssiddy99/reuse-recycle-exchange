@@ -3,7 +3,7 @@ document.getElementById("darkToggle").addEventListener("change", () => {
   document.body.classList.toggle("dark-mode");
 });
 
-// Dummy products
+// Dummy products (will be replaced dynamically)
 const products = [
   { name: "NCERT Physics Book", category: "Books" },
   { name: "Used Wooden Study Table", category: "Furniture" },
@@ -29,6 +29,23 @@ function renderProducts(list) {
   });
 }
 renderProducts(products);
+
+// Dynamic Load from Google Form Sheet
+const sheetURL = "https://script.google.com/macros/s/AKfycbxsKHPd_zkhOeoWsAVJ9H85WrFajMyyhmJnbnmLs3y12owT87x76BE3nOuPsg6jcFOhcg/exec"; // Replace with your Apps Script URL
+async function loadDonatedItems() {
+  try {
+    const res = await fetch(sheetURL);
+    const data = await res.json();
+    const donatedItems = data.map(item => ({
+      name: item["Product Name"],       // Match your sheet column
+      category: item["Category"]     // Match your sheet column
+    }));
+    renderProducts(donatedItems);
+  } catch (err) {
+    console.error("Failed to load donated items:", err);
+  }
+}
+loadDonatedItems();
 
 // Search
 function searchProducts() {
@@ -57,66 +74,37 @@ document.getElementById("cartClose").onclick = () => {
 function openCart() {
   document.getElementById("cartPanel").classList.add("active");
 }
-document.getElementById("cartButton").onclick = openCart;
+document.getElementById("cartButton").addEventListener("click", openCart);
 
-// Dummy donors
-const donors = [
-  { name: "Aarav Sharma", items: ["NCERT Physics Book", "Plastic Chair"] },
-  { name: "Priya Patel", items: ["Dell Laptop (2018)", "English Novel - Chetan Bhagat"] },
-  { name: "Rohan Verma", items: ["Men’s Kurta Set"] },
-  { name: "Sneha Iyer", items: ["Used Wooden Study Table", "NCERT Physics Book"] },
-  { name: "Aditya Mehra", items: ["Plastic Chair", "English Novel - Chetan Bhagat"] },
-  { name: "Ishita Nair", items: ["Math Reference Book", "Wooden Stool"] },
-  { name: "Kunal Joshi", items: ["Old Smartphone", "Headphones"] },
-  { name: "Meera Reddy", items: ["Saree", "Cooking Utensils"] },
-  { name: "Vikram Singh", items: ["Office Chair", "Keyboard"] },
-  { name: "Ananya Gupta", items: ["School Bag", "Story Books"] },
-];
-
-// Leaderboard
-const donorList = document.getElementById("donorList");
-donors.forEach((d, i) => {
-  const li = document.createElement("li");
-  li.innerHTML = `<span onclick="showDonorItems(${i})">${d.name} ${i===0?"🥇":i===1?"🥈":i===2?"🥉":""}</span>`;
-  donorList.appendChild(li);
-});
-
-// Show donor items
-function showDonorItems(index) {
-  const donor = donors[index];
-  alert(`${donor.name} donated:\n- ${donor.items.join("\n- ")}`);
-}
-
-// Contact form feedback
-document.getElementById("contactForm").addEventListener("submit", e => {
-  e.preventDefault();
-  alert("✅ Thank you! Your message has been sent.");
-  e.target.reset();
-});
-
-// Animate counters
-function animateCounter(el) {
-  const target = +el.getAttribute("data-target");
+// Impact & Counters (dummy numbers already in HTML)
+function animateCounter(id) {
+  const el = document.getElementById(id);
+  let target = parseInt(el.dataset.target);
   let count = 0;
-  const step = target / 100;
-  const update = () => {
+  let step = Math.ceil(target / 100);
+  const interval = setInterval(() => {
     count += step;
-    if (count < target) {
-      el.textContent = Math.ceil(count);
-      requestAnimationFrame(update);
+    if (count >= target) {
+      el.innerText = target.toLocaleString();
+      clearInterval(interval);
     } else {
-      el.textContent = target;
+      el.innerText = count.toLocaleString();
     }
-  };
-  update();
+  }, 20);
 }
+["itemsDonated","usersJoined","paperSaved","ewasteReduced","co2Saved"].forEach(animateCounter);
 
-const counters = document.querySelectorAll("[data-target]");
-let animated = false;
-window.addEventListener("scroll", () => {
-  const trigger = document.querySelector("#impact").offsetTop - window.innerHeight + 100;
-  if (!animated && window.scrollY > trigger) {
-    counters.forEach(animateCounter);
-    animated = true;
-  }
+// Leaderboard dummy members
+const donors = [
+  { name: "Rahul Sharma", items: 14 },
+  { name: "Priya Patel", items: 12 },
+  { name: "Amit Verma", items: 10 },
+  { name: "Sneha Reddy", items: 8 },
+  { name: "Ankit Singh", items: 6 },
+];
+const donorList = document.getElementById("donorList");
+donors.forEach(d => {
+  const li = document.createElement("li");
+  li.innerHTML = `<span>${d.name}</span> <span class="badge">📦 ${d.items}</span>`;
+  donorList.appendChild(li);
 });
