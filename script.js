@@ -38,9 +38,8 @@ async function loadDonatedItems() {
       }
     });
 
-    // Update impact tracker + leaderboard after items load
+    // Update impact tracker after items load
     updateImpact();
-    updateLeaderboard();
 
   } catch (error) {
     console.error("Error loading donated items:", error);
@@ -171,7 +170,7 @@ function updateImpact() {
     const category = p.querySelector("p").innerText.toLowerCase();
     if (category.includes("book")) paper += 1;
     if (category.includes("electronic")) ewaste += 5;
-    co2 += 2; // every item saves ~2kg CO₂
+    co2 += 2;
   });
 
   document.getElementById("paperSaved").innerText = paper;
@@ -180,49 +179,25 @@ function updateImpact() {
 }
 
 // ===========================
-// LEADERBOARD (from Google Sheet)
+// LEADERBOARD
 // ===========================
-async function updateLeaderboard() {
-  try {
-    const response = await fetch(sheetURL);
-    const data = await response.text();
-    const rows = data.split("\n").slice(1); // skip header
+function updateLeaderboard() {
+  const donors = [
+    { name: "Aarav", items: 12 },
+    { name: "Meera", items: 9 },
+    { name: "Rahul", items: 7 },
+    { name: "Sneha", items: 5 }
+  ];
 
-    const donors = {};
+  const list = document.getElementById("donorList");
+  list.innerHTML = "";
 
-    rows.forEach(row => {
-      const cols = row.split(",");
-      if (cols.length >= 4) {
-        const donorName = cols[3]?.trim() || "Anonymous"; // assuming column 4 is donor name
-        donors[donorName] = (donors[donorName] || 0) + 1;
-      }
-    });
-
-    // Convert to array and sort
-    const donorArray = Object.entries(donors).map(([name, items]) => ({ name, items }));
-    donorArray.sort((a, b) => b.items - a.items);
-
-    const list = document.getElementById("donorList");
-    list.innerHTML = "";
-
-    donorArray.forEach((d, index) => {
-      const li = document.createElement("li");
-      li.classList.add("donor-entry");
-
-      // Add crown/medals for top 3
-      let badge = "";
-      if (index === 0) badge = "👑";
-      else if (index === 1) badge = "🥈";
-      else if (index === 2) badge = "🥉";
-
-      li.innerHTML = `<span class="donor-rank">${badge || index + 1}</span>
-                      <span class="donor-name">${d.name}</span>
-                      <span class="donor-items">${d.items} items</span>`;
-      list.appendChild(li);
-    });
-  } catch (err) {
-    console.error("Error loading leaderboard:", err);
-  }
+  donors.sort((a, b) => b.items - a.items);
+  donors.forEach(d => {
+    const li = document.createElement("li");
+    li.innerText = `${d.name} — ${d.items} items`;
+    list.appendChild(li);
+  });
 }
 
 // ===========================
@@ -248,4 +223,5 @@ if (toggle) {
 window.onload = function () {
   loadDonatedItems();
   animateCounters();
+  updateLeaderboard();
 };
