@@ -4,72 +4,125 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reuse & Recycle Exchange</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
-    <h1>♻️ Reuse & Recycle Exchange</h1>
+    <div class="logo">♻ Reuse & Recycle Exchange</div>
     <nav>
-      <a href="#about">About</a>
-      <a href="#products">Buyback Items</a>
-      <a href="#donate">Donate</a>
-      <a href="#impact">Impact</a>
-      <a href="#leaderboard">Leaderboard</a>
-      <label class="switch">
-        <input type="checkbox" id="darkToggle">
-        <span class="slider round"></span>
-      </label>
-      <button onclick="openCart()">🛒 Cart</button>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#products">Buy Back</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle">
+      <label>
+        🌞 <input type="checkbox" id="darkToggle"> 🌙
+      </label>
+    </div>
   </header>
 
-  <!-- About Section -->
-  <section id="about">
+  <!-- HERO -->
+  <section id="hero" class="hero">
+    <h1>Welcome to Reuse & Recycle Exchange</h1>
+    <p>Give your items a second life and save the planet 🌍</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search items..." />
+      <button onclick="searchProducts()">Search</button>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categories" class="categories">
+    <h2>Categories</h2>
+    <div class="category-cards">
+      <div class="card" onclick="showCategory('Books')">📚 Books</div>
+      <div class="card" onclick="showCategory('Clothes')">👕 Clothes</div>
+      <div class="card" onclick="showCategory('Electronics')">💻 Electronics</div>
+      <div class="card" onclick="showCategory('Furniture')">🪑 Furniture</div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS (BUY BACK OPTIONS) -->
+  <section id="products" class="products">
+    <h2>Buy Back Options</h2>
+    <p>Explore items generously donated by our community. Pick what you need, give what you can.</p>
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
     <h2>About Us</h2>
-    <p>
-      A community-driven platform where every item finds a new purpose.  
-      Together we <b>reduce waste, save money, and protect the planet 🌍</b>.
-    </p>
+    <p>Welcome to <b>Reuse & Recycle Exchange</b>, a community-driven platform 
+       where students donate, exchange, and reuse items instead of throwing them away.  
+       Our mission: <b>reduce waste, save money, and protect the planet 🌍</b>.</p>
+    <div class="counters">
+      <div><span id="itemsDonated">0</span><p>Items Donated</p></div>
+      <div><span id="usersJoined">0</span><p>Users Joined</p></div>
+    </div>
   </section>
 
-  <!-- Products Section -->
-  <section id="products">
-    <h2>Available Buyback Items</h2>
-    <input type="text" id="searchInput" placeholder="Search donated items..." onkeyup="searchProducts()" />
-    <div id="productGrid" class="grid"></div>
+  <!-- DONATE & PICKUP -->
+  <section id="donate" class="donate">
+    <h2>Donate & Help the Planet ♻</h2>
+    <p>"Your old items can spark a new beginning for someone else. Let's reduce waste together!"</p>
+
+    <!-- Truck -->
+    <div class="truck-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Recycling Truck" class="truck">
+    </div>
+
+    <!-- Google Form Link -->
+    <a href="https://forms.gle/abcd1234xyz" target="_blank" class="donate-btn">Schedule a Pickup</a>
   </section>
 
-  <!-- Donate Section -->
-  <section id="donate">
-    <h2>Donate & Schedule a Pickup</h2>
-    <p class="inspire">“Donating today means giving your belongings a second life and someone else a brighter tomorrow.”</p>
-    <a href="https://forms.gle/your-google-form-link" target="_blank" class="pickup-btn">🚚 Schedule a Pickup</a>
-  </section>
-
-  <!-- Impact Section -->
-  <section id="impact">
-    <h2>Our Impact</h2>
+  <!-- IMPACT TRACKER -->
+  <section id="impact" class="impact">
+    <h2>Our Collective Impact 🌍</h2>
     <div class="impact-stats">
-      <div>📚 Paper Saved: <span id="paperSaved">0</span> kg</div>
-      <div>⚡ E-Waste Reduced: <span id="ewasteReduced">0</span> kg</div>
-      <div>🌱 CO₂ Saved: <span id="co2Saved">0</span> kg</div>
+      <div><span id="paperSaved">0</span> kg Paper Saved</div>
+      <div><span id="ewasteReduced">0</span> kg E-Waste Reduced</div>
+      <div><span id="co2Saved">0</span> kg CO₂ Saved</div>
     </div>
   </section>
 
-  <!-- Leaderboard -->
-  <section id="leaderboard">
-    <h2>🏆 Top Donors</h2>
-    <ul id="donorList"></ul>
+  <!-- LEADERBOARD -->
+  <section id="leaderboard" class="leaderboard">
+    <h2>Top Donors of the Month 🏆</h2>
+    <ol id="donorList"></ol>
   </section>
 
-  <!-- Cart Panel -->
-  <div id="cartPanel" class="cart-panel">
-    <div class="cart-header">
-      <h2>Your Cart</h2>
-      <button id="cartClose">✖</button>
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Email" required>
+      <textarea placeholder="Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Reuse & Recycle Exchange | Built with ❤️ for a greener tomorrow</p>
+    <div class="socials">
+      🌍 📘 🐦 📸
     </div>
+  </footer>
+
+  <!-- MINI CART PANEL -->
+  <div id="cartPanel">
+    <span id="cartClose">✖</span>
+    <h2>Your Cart</h2>
     <div id="cartItems"></div>
+    <button class="donate-btn">Checkout</button>
   </div>
 
   <script src="script.js"></script>
