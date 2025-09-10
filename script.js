@@ -1,13 +1,13 @@
-// Demo items
+// Demo items with proper placeholder images
 const items = [
-  { name: "Mathematics Book", category: "books", image: "https://via.placeholder.com/150" },
-  { name: "Science Book", category: "books", image: "https://via.placeholder.com/150" },
-  { name: "Laptop", category: "electronics", image: "https://via.placeholder.com/150" },
-  { name: "Headphones", category: "electronics", image: "https://via.placeholder.com/150" },
-  { name: "T-Shirt", category: "clothes", image: "https://via.placeholder.com/150" },
-  { name: "Jeans", category: "clothes", image: "https://via.placeholder.com/150" },
-  { name: "Toy Car", category: "toys", image: "https://via.placeholder.com/150" },
-  { name: "Doll", category: "toys", image: "https://via.placeholder.com/150" }
+  { name: "Mathematics Book", category: "books", image: "https://via.placeholder.com/150?text=Mathematics+Book" },
+  { name: "Science Book", category: "books", image: "https://via.placeholder.com/150?text=Science+Book" },
+  { name: "Laptop", category: "electronics", image: "https://via.placeholder.com/150?text=Laptop" },
+  { name: "Headphones", category: "electronics", image: "https://via.placeholder.com/150?text=Headphones" },
+  { name: "T-Shirt", category: "clothes", image: "https://via.placeholder.com/150?text=T-Shirt" },
+  { name: "Jeans", category: "clothes", image: "https://via.placeholder.com/150?text=Jeans" },
+  { name: "Toy Car", category: "toys", image: "https://via.placeholder.com/150?text=Toy+Car" },
+  { name: "Doll", category: "toys", image: "https://via.placeholder.com/150?text=Doll" }
 ];
 
 let cart = [];
@@ -21,6 +21,10 @@ const cartItems = document.getElementById("cartItems");
 // Render items
 function renderItems(list) {
   itemsContainer.innerHTML = "";
+  if(list.length === 0) {
+    itemsContainer.innerHTML = "<p>No items found.</p>";
+    return;
+  }
   list.forEach(item => {
     const card = document.createElement("div");
     card.className = "item-card";
