@@ -46,6 +46,7 @@ let cart = [];
 function addToCart(item) {
   cart.push(item);
   updateCart();
+  openCart();
 }
 function updateCart() {
   document.getElementById("cartItems").innerHTML = cart.map(c => `<p>${c}</p>`).join("");
@@ -56,6 +57,7 @@ document.getElementById("cartClose").onclick = () => {
 function openCart() {
   document.getElementById("cartPanel").classList.add("active");
 }
+document.getElementById("cartButton").onclick = openCart;
 
 // Dummy donors
 const donors = [
@@ -75,7 +77,7 @@ const donors = [
 const donorList = document.getElementById("donorList");
 donors.forEach((d, i) => {
   const li = document.createElement("li");
-  li.innerHTML = `<span onclick="showDonorItems(${i})">${d.name}</span>`;
+  li.innerHTML = `<span onclick="showDonorItems(${i})">${d.name} ${i===0?"🥇":i===1?"🥈":i===2?"🥉":""}</span>`;
   donorList.appendChild(li);
 });
 
@@ -84,3 +86,37 @@ function showDonorItems(index) {
   const donor = donors[index];
   alert(`${donor.name} donated:\n- ${donor.items.join("\n- ")}`);
 }
+
+// Contact form feedback
+document.getElementById("contactForm").addEventListener("submit", e => {
+  e.preventDefault();
+  alert("✅ Thank you! Your message has been sent.");
+  e.target.reset();
+});
+
+// Animate counters
+function animateCounter(el) {
+  const target = +el.getAttribute("data-target");
+  let count = 0;
+  const step = target / 100;
+  const update = () => {
+    count += step;
+    if (count < target) {
+      el.textContent = Math.ceil(count);
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = target;
+    }
+  };
+  update();
+}
+
+const counters = document.querySelectorAll("[data-target]");
+let animated = false;
+window.addEventListener("scroll", () => {
+  const trigger = document.querySelector("#impact").offsetTop - window.innerHeight + 100;
+  if (!animated && window.scrollY > trigger) {
+    counters.forEach(animateCounter);
+    animated = true;
+  }
+});
