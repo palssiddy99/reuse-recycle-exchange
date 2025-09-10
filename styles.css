@@ -1,4 +1,4 @@
-/* Reset */
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -7,259 +7,236 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  background: #f4f9f9;
   color: #333;
-  transition: background 0.3s, color 0.3s;
+  line-height: 1.6;
 }
 
+/* Header */
 header {
-  background: #fff;
-  padding: 15px 30px;
+  background: #2c786c;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 1rem 2rem;
 }
-
 header .logo {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
-
-nav ul {
-  display: flex;
+header nav ul {
   list-style: none;
-  gap: 20px;
+  display: flex;
+  gap: 1rem;
 }
-
-nav ul li a {
+header nav ul li a {
+  color: white;
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
 }
-
 .theme-toggle {
-  margin-left: 20px;
+  font-size: 0.9rem;
+  color: white;
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  padding: 60px 20px;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
 }
-
-.search-bar {
-  margin-top: 20px;
+.hero h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
-
-.search-bar input {
-  padding: 8px;
+.hero .search-bar {
+  margin-top: 1rem;
+}
+.hero input {
+  padding: 0.5rem;
   width: 200px;
 }
-
-.search-bar button {
-  padding: 8px 12px;
-  background: #333;
-  color: #fff;
+.hero button {
+  padding: 0.5rem 1rem;
+  background: #2c786c;
+  color: white;
   border: none;
   cursor: pointer;
 }
 
 /* Categories */
 .categories {
-  padding: 40px 20px;
+  padding: 2rem;
   text-align: center;
 }
-
 .category-cards {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 1rem;
 }
-
 .card {
-  background: #fff;
-  padding: 20px;
+  background: #e8f6ef;
+  padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   cursor: pointer;
   transition: transform 0.2s;
 }
-
 .card:hover {
   transform: scale(1.05);
 }
 
 /* Products */
 .products {
-  padding: 40px 20px;
+  padding: 2rem;
   text-align: center;
 }
-
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
 }
-
-.product {
+.product-card {
   background: #fff;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 1rem;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
-.product img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+.product-card h3 {
+  margin-bottom: 0.5rem;
+}
+.product-card button {
+  background: #2c786c;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 /* About */
 .about {
-  padding: 40px 20px;
-  background: #f9f9f9;
+  padding: 2rem;
   text-align: center;
+  background: #f0f8f8;
 }
-
 .counters {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.counters div {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 /* Donate */
 .donate {
-  padding: 40px 20px;
   text-align: center;
-  background: #eafbea;
+  padding: 2rem;
 }
-
+.truck-container {
+  margin: 1rem 0;
+}
+.truck {
+  width: 80px;
+}
 .donate-btn {
   display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #28a745;
-  color: #fff;
+  background: #2c786c;
+  color: white;
+  padding: 0.6rem 1rem;
   text-decoration: none;
   border-radius: 5px;
-}
-
-/* Truck Animation */
-.truck-container {
-  position: relative;
-  height: 70px;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-
-.truck {
-  height: 50px;
-  position: absolute;
-  left: -80px;
-  animation: drive 6s linear infinite;
-}
-
-@keyframes drive {
-  0% { left: -80px; }
-  50% { left: calc(50% - 25px); }
-  100% { left: 110%; }
+  margin-top: 1rem;
 }
 
 /* Impact */
 .impact {
+  padding: 2rem;
   text-align: center;
-  padding: 50px 20px;
-  background: #eafbea;
+  background: #f7f7f7;
 }
 .impact-stats {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  font-size: 1.2rem;
-  margin-top: 20px;
+  gap: 2rem;
 }
 
 /* Leaderboard */
 .leaderboard {
+  padding: 2rem;
   text-align: center;
-  padding: 40px 20px;
-  background: #f0f8ff;
 }
 .leaderboard ol {
   list-style: none;
   padding: 0;
 }
 .leaderboard li {
-  margin: 10px 0;
-  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  background: #e8f6ef;
+  padding: 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.leaderboard li:hover {
+  background: #cceee0;
 }
 
 /* Contact */
 .contact {
-  padding: 40px 20px;
+  padding: 2rem;
   text-align: center;
 }
 .contact form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
   max-width: 400px;
-  margin: 0 auto;
+  margin: auto;
 }
 .contact input, .contact textarea {
-  padding: 10px;
+  padding: 0.5rem;
   border: 1px solid #ccc;
+}
+.contact button {
+  background: #2c786c;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 /* Footer */
 footer {
+  background: #2c786c;
+  color: white;
   text-align: center;
-  padding: 20px;
-  background: #333;
-  color: #fff;
+  padding: 1rem;
+}
+.socials {
+  margin-top: 0.5rem;
 }
 
 /* Cart Panel */
 #cartPanel {
   position: fixed;
-  right: 0;
+  right: -300px;
   top: 0;
   width: 300px;
   height: 100%;
-  background: #fff;
+  background: white;
   box-shadow: -2px 0 5px rgba(0,0,0,0.2);
-  padding: 20px;
-  display: none;
-  flex-direction: column;
-  overflow-y: auto;
+  padding: 1rem;
+  transition: right 0.3s;
+}
+#cartPanel.active {
+  right: 0;
 }
 #cartClose {
+  float: right;
   cursor: pointer;
-  font-size: 18px;
-  align-self: flex-end;
-}
-
-/* Dark Mode */
-body.dark-mode {
-  background: #121212;
-  color: #eee;
-}
-body.dark-mode header,
-body.dark-mode footer {
-  background: #1f1f1f;
-}
-body.dark-mode .card,
-body.dark-mode .product,
-body.dark-mode .about,
-body.dark-mode .donate,
-body.dark-mode .impact,
-body.dark-mode .leaderboard {
-  background: #222;
-  color: #eee;
+  font-weight: bold;
 }
