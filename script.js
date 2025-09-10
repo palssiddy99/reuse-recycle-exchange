@@ -1,81 +1,103 @@
-// --- Cart System ---
+// Demo items
+const items = [
+  { name: "Mathematics Book", category: "books", image: "https://via.placeholder.com/150" },
+  { name: "Science Book", category: "books", image: "https://via.placeholder.com/150" },
+  { name: "Laptop", category: "electronics", image: "https://via.placeholder.com/150" },
+  { name: "Headphones", category: "electronics", image: "https://via.placeholder.com/150" },
+  { name: "T-Shirt", category: "clothes", image: "https://via.placeholder.com/150" },
+  { name: "Jeans", category: "clothes", image: "https://via.placeholder.com/150" },
+  { name: "Toy Car", category: "toys", image: "https://via.placeholder.com/150" },
+  { name: "Doll", category: "toys", image: "https://via.placeholder.com/150" }
+];
+
 let cart = [];
 
-// Add item to cart
-function addToCart(item) {
-  cart.push(item);
-  updateCartCount();
-  alert(item + " added to cart!");
-}
+// DOM Elements
+const itemsContainer = document.getElementById("itemsContainer");
+const cartCount = document.getElementById("cartCount");
+const cartSection = document.getElementById("cartSection");
+const cartItems = document.getElementById("cartItems");
 
-// Update cart count in header
-function updateCartCount() {
-  document.getElementById("cart-count").innerText = cart.length;
-}
-
-// Show Cart Modal
-function showCart() {
-  let modal = document.getElementById("cart-modal");
-  let cartItems = document.getElementById("cart-items");
-
-  cartItems.innerHTML = ""; // Clear old items
-
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<li>Your cart is empty.</li>";
-  } else {
-    cart.forEach((item, index) => {
-      let li = document.createElement("li");
-      li.textContent = item;
-
-      // Remove button
-      let removeBtn = document.createElement("button");
-      removeBtn.textContent = "❌";
-      removeBtn.style.marginLeft = "10px";
-      removeBtn.onclick = () => {
-        removeFromCart(index);
-      };
-
-      li.appendChild(removeBtn);
-      cartItems.appendChild(li);
-    });
-  }
-
-  modal.style.display = "block";
-}
-
-// Close Cart Modal
-function closeCart() {
-  document.getElementById("cart-modal").style.display = "none";
-}
-
-// Remove item from cart
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCartCount();
-  showCart(); // Refresh modal
-}
-
-// --- Search System ---
-function searchItems() {
-  let input = document.getElementById("search-bar").value.toLowerCase();
-  let items = document.querySelectorAll(".card");
-
-  items.forEach(card => {
-    let title = card.querySelector("h3").innerText.toLowerCase();
-    let category = card.querySelector("p").innerText.toLowerCase();
-
-    if (title.includes(input) || category.includes(input)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+// Render items
+function renderItems(list) {
+  itemsContainer.innerHTML = "";
+  list.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "item-card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <button onclick="addToCart('${item.name}')">Add to Cart</button>
+    `;
+    itemsContainer.appendChild(card);
   });
 }
 
-// --- Close modal if clicked outside ---
-window.onclick = function(event) {
-  let modal = document.getElementById("cart-modal");
-  if (event.target === modal) {
-    modal.style.display = "none";
+// Add to cart
+function addToCart(itemName) {
+  const item = items.find(i => i.name === itemName);
+  cart.push(item);
+  cartCount.textContent = cart.length;
+}
+
+// Render cart
+function renderCart() {
+  cartItems.innerHTML = "";
+  if (cart.length === 0) {
+    cartItems.innerHTML = "<p>Your cart is empty.</p>";
+    return;
   }
-};
+  cart.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "item-card";
+    card.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <h3>${item.name}</h3>
+      <button onclick="removeFromCart(${index})">Remove</button>
+    `;
+    cartItems.appendChild(card);
+  });
+}
+
+// Remove from cart
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  cartCount.textContent = cart.length;
+  renderCart();
+}
+
+// Category filter
+document.querySelectorAll(".category").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const category = btn.dataset.category;
+    const filtered = items.filter(item => item.category === category);
+    renderItems(filtered);
+  });
+});
+
+// Search filter
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  const filtered = items.filter(item => item.name.toLowerCase().includes(query));
+  renderItems(filtered);
+});
+
+// Cart buttons
+document.getElementById("cartBtn").addEventListener("click", () => {
+  renderCart();
+  cartSection.classList.remove("hidden");
+});
+
+document.getElementById("closeCartBtn").addEventListener("click", () => {
+  cartSection.classList.add("hidden");
+});
+
+document.getElementById("checkoutBtn").addEventListener("click", () => {
+  alert("Checkout successful! Thank you for reusing & recycling 🌍");
+  cart = [];
+  cartCount.textContent = 0;
+  renderCart();
+});
+
+// Initial render
+renderItems(items);
