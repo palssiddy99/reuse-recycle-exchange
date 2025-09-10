@@ -1,125 +1,81 @@
-// Demo dataset of items
-const demoItems = [
-  { id: 1, name: "Physics Book", category: "Books", condition: "Good", available: true },
-  { id: 2, name: "Laptop (Dell)", category: "Electronics", condition: "Used", available: true },
-  { id: 3, name: "Wooden Chair", category: "Furniture", condition: "Good", available: false },
-  { id: 4, name: "Hoodie", category: "Clothes", condition: "New", available: true },
-  { id: 5, name: "Pen Set", category: "Stationery", condition: "New", available: true },
-];
-
-// DOM Elements
-const itemsContainer = document.querySelector(".items");
-const searchInput = document.getElementById("searchInput");
-const clearSearchBtn = document.getElementById("clearSearch");
-const filterCheckboxes = document.querySelectorAll(".f-cat");
-const availableCheckbox = document.getElementById("f-available");
-
-// Cart
-const cartList = document.getElementById("cartList");
-const cartEmpty = document.querySelector(".cart-empty");
-const checkoutBtn = document.getElementById("checkoutBtn");
+// --- Cart System ---
 let cart = [];
 
-// ===== RENDER ITEMS =====
-function renderItems() {
-  itemsContainer.innerHTML = "";
-  const searchTerm = searchInput.value.toLowerCase();
-
-  // Gather filters
-  const selectedCategories = Array.from(filterCheckboxes)
-    .filter(cb => cb.checked)
-    .map(cb => cb.value);
-  const onlyAvailable = availableCheckbox.checked;
-
-  // Filter dataset
-  let filtered = demoItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm);
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.category);
-    const matchesAvailability = !onlyAvailable || item.available;
-    return matchesSearch && matchesCategory && matchesAvailability;
-  });
-
-  // Render
-  if (filtered.length === 0) {
-    itemsContainer.innerHTML = "<p>No items found.</p>";
-    return;
-  }
-
-  filtered.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "item-card";
-    div.innerHTML = `
-      <h4>${item.name}</h4>
-      <p>${item.category} | ${item.condition}</p>
-      <button class="btn btn-soft" ${item.available ? "" : "disabled"}>${item.available ? "Add to Cart" : "Unavailable"}</button>
-    `;
-
-    const btn = div.querySelector("button");
-    if (item.available) {
-      btn.addEventListener("click", () => addToCart(item));
-    }
-
-    itemsContainer.appendChild(div);
-  });
-}
-
-// ===== CART FUNCTIONS =====
+// Add item to cart
 function addToCart(item) {
-  if (!cart.includes(item)) {
-    cart.push(item);
-    updateCart();
-  }
+  cart.push(item);
+  updateCartCount();
+  alert(item + " added to cart!");
 }
 
-function updateCart() {
-  cartList.innerHTML = "";
+// Update cart count in header
+function updateCartCount() {
+  document.getElementById("cart-count").innerText = cart.length;
+}
+
+// Show Cart Modal
+function showCart() {
+  let modal = document.getElementById("cart-modal");
+  let cartItems = document.getElementById("cart-items");
+
+  cartItems.innerHTML = ""; // Clear old items
+
   if (cart.length === 0) {
-    cartEmpty.style.display = "block";
-    return;
+    cartItems.innerHTML = "<li>Your cart is empty.</li>";
+  } else {
+    cart.forEach((item, index) => {
+      let li = document.createElement("li");
+      li.textContent = item;
+
+      // Remove button
+      let removeBtn = document.createElement("button");
+      removeBtn.textContent = "❌";
+      removeBtn.style.marginLeft = "10px";
+      removeBtn.onclick = () => {
+        removeFromCart(index);
+      };
+
+      li.appendChild(removeBtn);
+      cartItems.appendChild(li);
+    });
   }
 
-  cartEmpty.style.display = "none";
-  cart.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.name;
-    cartList.appendChild(li);
+  modal.style.display = "block";
+}
+
+// Close Cart Modal
+function closeCart() {
+  document.getElementById("cart-modal").style.display = "none";
+}
+
+// Remove item from cart
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCartCount();
+  showCart(); // Refresh modal
+}
+
+// --- Search System ---
+function searchItems() {
+  let input = document.getElementById("search-bar").value.toLowerCase();
+  let items = document.querySelectorAll(".card");
+
+  items.forEach(card => {
+    let title = card.querySelector("h3").innerText.toLowerCase();
+    let category = card.querySelector("p").innerText.toLowerCase();
+
+    if (title.includes(input) || category.includes(input)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
   });
 }
 
-checkoutBtn.addEventListener("click", () => {
-  if (cart.length === 0) {
-    alert("Your cart is empty!");
-  } else {
-    alert("Proceeding to checkout with: " + cart.map(i => i.name).join(", "));
+// --- Close modal if clicked outside ---
+window.onclick = function(event) {
+  let modal = document.getElementById("cart-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
   }
-});
-
-// ===== SEARCH / FILTER EVENTS =====
-searchInput.addEventListener("input", renderItems);
-clearSearchBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  renderItems();
-});
-filterCheckboxes.forEach(cb => cb.addEventListener("change", renderItems));
-availableCheckbox.addEventListener("change", renderItems);
-
-// Init
-renderItems();
-
-// ===== IMPACT COUNTER ANIMATION =====
-const counters = document.querySelectorAll(".stat-number");
-counters.forEach(counter => {
-  const update = () => {
-    const target = +counter.getAttribute("data-target");
-    const current = +counter.textContent;
-    const increment = Math.ceil(target / 100);
-
-    if (current < target) {
-      counter.textContent = current + increment;
-      setTimeout(update, 30);
-    } else {
-      counter.textContent = target;
-    }
-  };
-  update();
-});
+};
