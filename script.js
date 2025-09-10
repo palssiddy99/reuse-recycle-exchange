@@ -1,90 +1,164 @@
-// -------------------- DATA --------------------
-const products = [
-  { name: "Maths Textbook", category: "Books", price: 120, img: "https://images.unsplash.com/photo-1581091012184-7a48b0b6fa0e" },
-  { name: "Laptop Dell Inspiron", category: "Electronics", price: 35000, img: "https://images.unsplash.com/photo-1587829741301-dc798b83add3" },
-  { name: "Kids T-shirt", category: "Clothes", price: 250, img: "https://images.unsplash.com/photo-1602810318851-8a5cb11a2d0e" },
-  { name: "Wooden Chair", category: "Furniture", price: 1500, img: "https://images.unsplash.com/photo-1567016558829-4cce9b6f5932" },
-  { name: "Toy Car", category: "Toys", price: 400, img: "https://images.unsplash.com/photo-1618354692346-7de6890c43e6" },
-  { name: "English Novel", category: "Books", price: 200, img: "https://images.unsplash.com/photo-1512820790803-83ca734da794" },
-  { name: "Headphones Sony", category: "Electronics", price: 2500, img: "https://images.unsplash.com/photo-1580894908361-1b3d1d0f2f43" },
-  { name: "Jeans", category: "Clothes", price: 600, img: "https://images.unsplash.com/photo-1602810318851-8a5cb11a2d0e" },
-  { name: "Study Table", category: "Furniture", price: 2000, img: "https://images.unsplash.com/photo-1598300053893-c7cb0418b197" },
-  { name: "Action Figure", category: "Toys", price: 500, img: "https://images.unsplash.com/photo-1618354692346-7de6890c43e6" },
-];
+// ===========================
+// CONFIG
+// ===========================
 
-// Cart
-let cart = [];
+// Replace this with your actual published Google Sheet CSV link
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnN3pKJweVkJWkw-nx-GPJIBsKAObM489cSBcydSALG8MhvWEFeB8AnTTAtyH3Q1IOKSWHDX8kX6PF/pub?output=csv";
 
-// -------------------- DOM --------------------
-const productGrid = document.getElementById("productGrid");
-const cartCount = document.getElementById("cartCount");
-const itemsDonated = document.getElementById("itemsDonated");
-const usersJoined = document.getElementById("usersJoined");
+// ===========================
+// LOAD DONATED ITEMS
+// ===========================
+async function loadDonatedItems() {
+  try {
+    const response = await fetch(sheetURL);
+    const data = await response.text();
+    const rows = data.split("\n").slice(1); // Skip header row
 
-// -------------------- FUNCTIONS --------------------
+    const grid = document.getElementById("productGrid");
+    grid.innerHTML = "";
 
-// Display products
-function displayProducts(list) {
-  productGrid.innerHTML = "";
-  list.forEach((p, index) => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-    card.innerHTML = `
-      <img src="${p.img}" alt="${p.name}">
-      <h3>${p.name}</h3>
-      <p>₹${p.price}</p>
-      <button onclick="addToCart(${index})">Add to Cart</button>
-    `;
-    productGrid.appendChild(card);
+    rows.forEach(row => {
+      const cols = row.split(",");
+      if (cols.length >= 3) {
+        const name = cols[0].trim();
+        const category = cols[1].trim();
+        const img = cols[2].trim() || "https://i.imgur.com/placeholder.png";
+
+        if (name) {
+          const div = document.createElement("div");
+          div.classList.add("product");
+          div.innerHTML = `
+            <img src="${img}" alt="${name}">
+            <h3>${name}</h3>
+            <p>Category: ${category}</p>
+            <button onclick="addToCart('${name}')">Add to Cart</button>
+          `;
+          grid.appendChild(div);
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error loading donated items:", error);
+  }
+}
+
+// ===========================
+// SEARCH FUNCTION
+// ===========================
+function searchProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const products = document.querySelectorAll(".product");
+
+  products.forEach(product => {
+    const title = product.querySelector("h3").innerText.toLowerCase();
+    if (title.includes(input)) {
+      product.style.display = "block";
+    } else {
+      product.style.display = "none";
+    }
   });
 }
 
-// Add to Cart
-function addToCart(index) {
-  cart.push(products[index]);
-  cartCount.textContent = cart.length;
-  alert(`${products[index].name} added to cart!`);
-}
-
-// Category filter
-function showCategory(cat) {
-  const filtered = products.filter(p => p.category === cat);
-  displayProducts(filtered);
-}
-
-// Search
-function searchItems() {
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-  displayProducts(filtered);
-}
-
-// -------------------- COUNTERS ANIMATION --------------------
-let donated = 125; // example
-let users = 75;    // example
-
-function animateCounter(elem, target) {
-  let count = 0;
-  const step = Math.ceil(target / 100);
-  const interval = setInterval(() => {
-    count += step;
-    if(count >= target) {
-      count = target;
-      clearInterval(interval);
+// ===========================
+// FILTER BY CATEGORY
+// ===========================
+function showCategory(category) {
+  const products = document.querySelectorAll(".product");
+  products.forEach(product => {
+    const text = product.querySelector("p").innerText;
+    if (text.includes(category)) {
+      product.style.display = "block";
+    } else {
+      product.style.display = "none";
     }
-    elem.textContent = count;
-  }, 20);
+  });
 }
 
-animateCounter(itemsDonated, donated);
-animateCounter(usersJoined, users);
+// ===========================
+// CART SYSTEM
+// ===========================
+let cart = [];
 
-// -------------------- INIT --------------------
-displayProducts(products);
+function addToCart(itemName) {
+  cart.push(itemName);
+  alert(itemName + " added to cart!");
+  renderCart();
+}
 
-// -------------------- CONTACT FORM --------------------
-document.getElementById("contactForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  alert("Thank you! Your message has been sent.");
-  this.reset();
-});
+function renderCart() {
+  const cartItems = document.getElementById("cartItems");
+  cartItems.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.classList.add("cart-item");
+    div.innerHTML = `
+      <span>${item}</span>
+      <button onclick="removeFromCart(${index})">Remove</button>
+    `;
+    cartItems.appendChild(div);
+  });
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
+
+// ===========================
+// CART PANEL TOGGLE
+// ===========================
+const cartPanel = document.getElementById("cartPanel");
+const cartClose = document.getElementById("cartClose");
+
+if (cartClose) {
+  cartClose.addEventListener("click", () => {
+    cartPanel.style.display = "none";
+  });
+}
+
+function openCart() {
+  cartPanel.style.display = "block";
+  renderCart();
+}
+
+// ===========================
+// COUNTERS (ABOUT SECTION)
+// ===========================
+function animateCounters() {
+  let donatedCount = 0;
+  let usersCount = 0;
+  const donatedTarget = 120; // Example number
+  const usersTarget = 75;
+
+  const donatedInterval = setInterval(() => {
+    if (donatedCount < donatedTarget) {
+      donatedCount++;
+      document.getElementById("itemsDonated").innerText = donatedCount;
+    } else {
+      clearInterval(donatedInterval);
+    }
+  }, 30);
+
+  const usersInterval = setInterval(() => {
+    if (usersCount < usersTarget) {
+      usersCount++;
+      document.getElementById("usersJoined").innerText = usersCount;
+    } else {
+      clearInterval(usersInterval);
+    }
+  }, 40);
+}
+
+// ===========================
+// INIT
+// ===========================
+window.onload = function () {
+  loadDonatedItems();
+  animateCounters();
+};
