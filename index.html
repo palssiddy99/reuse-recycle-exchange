@@ -1,178 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Reuse & Recycle Exchange</title>
   <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0f766e">
 </head>
 <body>
+  <!-- ANNOUNCEMENT -->
+  <div id="announcement" class="announcement reveal">
+    ♻ Green Week: Donate 2 items and get ₹100 off Buyback! &nbsp;
+    <button id="closeAnn" class="link-btn">Dismiss</button>
+  </div>
+
   <!-- HEADER -->
-  <header>
-    <div class="logo">♻ Reuse & Recycle Exchange</div>
-    <nav>
-      <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#categories">Categories</a></li>
-        <li><a href="#products">Buy Back</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#donate">Donate</a></li>
-        <li><a href="#impact">Impact</a></li>
-        <li><a href="#leaderboard">Leaderboard</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="theme-toggle">
-      <label>
-        🌞 <input type="checkbox" id="darkToggle"> 🌙
-      </label>
+  <header id="siteHeader" class="site-header">
+    <div class="container header-inner">
+      <a href="#hero" class="brand">
+        <div class="logo">♻</div>
+        <div class="brand-text">
+          <div class="brand-title">Reuse & Recycle Exchange</div>
+          <div class="brand-sub">Give items a second life</div>
+        </div>
+      </a>
+
+      <nav class="nav" id="mainNav">
+        <a class="nav-link" href="#hero">Home</a>
+        <a class="nav-link" href="#categories">Categories</a>
+        <a class="nav-link" href="#products">Buy Back</a>
+        <a class="nav-link" href="#impact">Impact</a>
+        <a class="nav-link" href="#donate">Donate</a>
+        <a class="nav-link" href="#testimonials">Testimonials</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="search-sm">
+          <input id="searchInput" aria-label="Search items" placeholder="Search items..." />
+        </div>
+
+        <button id="themeToggle" class="icon-btn" title="Toggle dark mode" aria-pressed="false">🌙</button>
+
+        <button id="wishlistBtn" class="icon-btn" title="Wishlist" aria-label="Wishlist">❤️ <span id="wishCount" class="badge">0</span></button>
+
+        <button id="cartBtn" class="icon-btn" title="Cart" aria-label="Open cart">🛒 <span id="cartCount" class="badge">0</span></button>
+
+        <div id="authArea" class="auth-area">
+          <button id="loginBtn" class="primary-btn">Login / Sign up</button>
+        </div>
+
+        <button id="mobileMenuBtn" class="icon-btn mobile-only" aria-expanded="false">☰</button>
+      </div>
+    </div>
+
+    <!-- mobile nav -->
+    <div id="mobileNav" class="mobile-nav" aria-hidden="true">
+      <a class="mobile-link" href="#categories">Categories</a>
+      <a class="mobile-link" href="#products">Buy Back</a>
+      <a class="mobile-link" href="#donate">Donate</a>
+      <a class="mobile-link" href="#contact">Contact</a>
     </div>
   </header>
 
   <!-- HERO -->
-  <section id="hero" class="hero">
-    <h1>Welcome to Reuse & Recycle Exchange</h1>
-    <p>Give your items a second life and save the planet 🌍</p>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search items..." />
-      <button onclick="searchProducts()">Search</button>
-    </div>
-  </section>
+  <main>
+    <section id="hero" class="hero container reveal">
+      <div class="hero-left">
+        <h1 class="hero-title">Give old items a second life — help the planet 🌍</h1>
+        <p class="muted hero-sub">Donate, exchange or buy second-hand items from our student community — local, affordable, sustainable.</p>
 
-  <!-- CATEGORIES -->
-  <section id="categories" class="categories">
-    <h2>Categories</h2>
-    <div class="category-cards">
-      <div class="card" onclick="showCategory('Books')">📚 Books</div>
-      <div class="card" onclick="showCategory('Clothes')">👕 Clothes</div>
-      <div class="card" onclick="showCategory('Electronics')">💻 Electronics</div>
-      <div class="card" onclick="showCategory('Furniture')">🪑 Furniture</div>
-    </div>
-  </section>
+        <div class="hero-actions">
+          <input id="heroSearch" placeholder="Search books, clothes, electronics..." />
+          <button id="heroSearchBtn" class="primary-btn">Search</button>
+          <a href="#donate" class="secondary-btn">Schedule Pickup</a>
+        </div>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="products">
-    <h2>Buy Back Options</h2>
-    <p>Explore items generously donated by our community. Pick what you need, give what you can.</p>
-    <div class="product-grid" id="productGrid">
-      <!-- Sample Product -->
-      <div class="product-card">
-        <button class="wishlist-btn">♡</button>
-        <img src="https://m.media-amazon.com/images/I/81WcnNQ-TBL.jpg" alt="Book">
-        <h3>NCERT Physics Book</h3>
-        <p>Class 12 – Gently used</p>
-        <span class="price">₹150</span>
-        <button>Add to Cart</button>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-value" data-target="650" id="itemsDonated">650</div>
+            <div class="stat-label">Items Donated</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" data-target="120" id="usersJoined">120</div>
+            <div class="stat-label">Users Joined</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" data-target="2400" id="co2Saved">2,400</div>
+            <div class="stat-label">kg CO₂ Saved</div>
+          </div>
+        </div>
       </div>
 
-      <div class="product-card">
-        <button class="wishlist-btn">♡</button>
-        <img src="https://m.media-amazon.com/images/I/71ZyFHTuk-L._AC_UY1100_.jpg" alt="Kurta">
-        <h3>Traditional Kurta</h3>
-        <p>Men’s L size</p>
-        <span class="price">₹250</span>
-        <button>Add to Cart</button>
+      <div class="hero-right">
+        <div class="hero-card animate-pop">
+          <img src="https://images.unsplash.com/photo-1520975910177-6a2b1247f1b8?auto=format&fit=crop&w=900&q=60" alt="donation drive image" />
+          <div class="hero-card-text">
+            <h3>Trusted by campuses</h3>
+            <p class="muted">Verified donors, simple pickups, safe handoffs.</p>
+            <div class="small-cta">Free pickup scheduling • Verified donors</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="categories" class="container section reveal">
+      <h2>Categories</h2>
+      <div class="categories-grid" id="categoriesGrid"></div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products" class="container section reveal">
+      <div class="section-head">
+        <h2>Buy Back Options</h2>
+        <div class="muted" id="resultCount">Showing 0 items</div>
+      </div>
+
+      <div class="product-filter-row">
+        <select id="sortSelect" aria-label="Sort products">
+          <option value="popular">Most relevant</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+
+        <div class="chip-row">
+          <button class="chip" data-cat="All">All</button>
+          <button class="chip" data-cat="Books">Books</button>
+          <button class="chip" data-cat="Clothes">Clothes</button>
+          <button class="chip" data-cat="Electronics">Electronics</button>
+          <button class="chip" data-cat="Furniture">Furniture</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- DONATE -->
+    <section id="donate" class="container section donate-section reveal">
+      <div class="donate-left">
+        <h2>Donate & Help the Planet ♻</h2>
+        <p class="muted">Your old items can spark a new beginning for someone else. Schedule a free pickup and we’ll connect you with nearby users.</p>
+        <div class="donate-actions">
+          <a href="https://forms.gle/PvNQ6PBRYknaCD5i7" target="_blank" rel="noreferrer" class="primary-btn">Schedule a Pickup</a>
+          <button id="howItWorksBtn" class="secondary-btn">How it works</button>
+        </div>
+      </div>
+      <div class="donate-right">
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="truck" class="truck">
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="container section reveal">
+      <h2>Our Collective Impact 🌍</h2>
+      <div class="impact-grid">
+        <div class="impact-card"><div class="big">1,500</div><div class="muted">kg Paper Saved</div></div>
+        <div class="impact-card"><div class="big">850</div><div class="muted">kg E-waste Reduced</div></div>
+        <div class="impact-card"><div class="big">2,400</div><div class="muted">kg CO₂ Saved</div></div>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD / TESTIMONIALS -->
+    <section class="container section flex-split reveal">
+      <div class="panel">
+        <h3>Top Donors of the Month</h3>
+        <ol id="donorList" class="leaderboard"></ol>
+      </div>
+      <div class="panel">
+        <h3>What students say</h3>
+        <div id="testimonial" class="testimonial"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container section reveal">
+      <h2>Contact Us</h2>
+      <form id="contactForm" class="contact-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactName">Your name</label>
+            <input id="contactName" type="text" placeholder="Name" required />
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email</label>
+            <input id="contactEmail" type="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contactMsg">Message</label>
+          <textarea id="contactMsg" rows="5" placeholder="How can we help?" required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="primary-btn" type="submit">Send Message</button>
+          <div id="contactNote" class="muted">We aim to reply within 2 business days (demo).</div>
+        </div>
+      </form>
+    </section>
+
+    <footer class="site-footer reveal">
+      <div class="container footer-grid">
+        <div>
+          <h4>Reuse & Recycle Exchange</h4>
+          <p class="muted">Student-driven platform to donate, exchange & buy pre-loved items.</p>
+          <div class="socials">
+            <a class="social" href="#" title="Website">🌐</a>
+            <a class="social" href="#" title="Facebook">📘</a>
+            <a class="social" href="#" title="Twitter">🐦</a>
+            <a class="social" href="#" title="Instagram">📸</a>
+          </div>
+        </div>
+        <div>
+          <h4>Quick links</h4>
+          <a href="#donate" class="footer-link">Donate</a>
+          <a href="#products" class="footer-link">Buy Back</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="#" class="footer-link">Privacy</a>
+          <a href="#" class="footer-link">Terms</a>
+        </div>
+      </div>
+      <div class="container copyright">© 2025 Reuse & Recycle Exchange — Built with ❤️</div>
+    </footer>
+  </main>
+
+  <!-- CART PANEL -->
+  <aside id="cartPanel" class="cart-panel" aria-hidden="true">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="cartClose" class="link-btn">Close</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="cart-total">Total: ₹ <span id="cartTotal">0</span></div>
+      <div class="cart-actions">
+        <button id="clearCart" class="secondary-btn">Clear</button>
+        <button id="checkoutBtn" class="primary-btn">Checkout</button>
       </div>
     </div>
-  </section>
+  </aside>
 
-  <!-- ABOUT -->
-  <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>Welcome to <b>Reuse & Recycle Exchange</b>, a community-driven platform 
-       where students donate, exchange, and reuse items instead of throwing them away.  
-       Our mission: <b>reduce waste, save money, and protect the planet 🌍</b>.</p>
-    <div class="counters">
-      <div>
-        <span id="itemsDonated" data-target="650">650</span>
-        <p>Items Donated</p>
-      </div>
-      <div>
-        <span id="usersJoined" data-target="120">120</span>
-        <p>Users Joined</p>
-      </div>
-    </div>
-  </section>
+  <!-- LOGIN / SIGNUP MODAL -->
+  <div id="authModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button id="authClose" class="modal-close" aria-label="Close">✖</button>
+      <div class="auth-forms">
+        <div class="auth-tabs">
+          <button id="tabLogin" class="tab active">Login</button>
+          <button id="tabSignup" class="tab">Sign up</button>
+        </div>
 
-  <!-- DONATE -->
-  <section id="donate" class="donate">
-    <h2>Donate & Help the Planet ♻</h2>
-    <p>"Your old items can spark a new beginning for someone else. Let's reduce waste together!"</p>
-    <div class="truck-container">
-      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Recycling Truck" class="truck">
-    </div>
-    <a href="https://forms.gle/PvNQ6PBRYknaCD5i7" target="_blank" class="donate-btn">Schedule a Pickup</a>
-  </section>
+        <form id="loginForm" class="auth-form">
+          <input id="loginEmail" type="email" placeholder="Email" required />
+          <input id="loginPassword" type="password" placeholder="Password" required />
+          <button class="primary-btn">Login</button>
+        </form>
 
-  <!-- IMPACT -->
-  <section id="impact" class="impact">
-    <h2>Our Collective Impact 🌍</h2>
-    <div class="impact-stats">
-      <div><span id="paperSaved" data-target="1500">1,500</span> kg Paper Saved</div>
-      <div><span id="ewasteReduced" data-target="850">850</span> kg E-Waste Reduced</div>
-      <div><span id="co2Saved" data-target="2400">2,400</span> kg CO₂ Saved</div>
-    </div>
-  </section>
-
-  <!-- LEADERBOARD -->
-  <section id="leaderboard" class="leaderboard">
-    <h2>Top Donors of the Month 🏆</h2>
-    <ol id="donorList">
-      <li>Riya Sharma – 25 items</li>
-      <li>Amit Verma – 18 items</li>
-      <li>Siddhant P – 15 items</li>
-    </ol>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="testimonials" class="testimonials">
-    <h2>What Our Users Say 💬</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial-card">
-        <p>"I got my entire semester’s books for free here! Amazing initiative."</p>
-        <h4>– Priya Singh</h4>
-      </div>
-      <div class="testimonial-card">
-        <p>"Donated old clothes and got a study table in return. Win-win!"</p>
-        <h4>– Rohit Mehta</h4>
-      </div>
-      <div class="testimonial-card">
-        <p>"This platform made moving out of hostel so much easier. Highly recommend!"</p>
-        <h4>– Neha Gupta</h4>
+        <form id="signupForm" class="auth-form hidden">
+          <input id="signupName" placeholder="Full name" required />
+          <input id="signupEmail" type="email" placeholder="Email" required />
+          <input id="signupPassword" type="password" placeholder="Password (min 6 chars)" minlength="6" />
+          <button class="primary-btn">Create account</button>
+        </form>
+        <div id="authMsg" class="muted small"></div>
       </div>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Email" required>
-      <textarea placeholder="Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 Reuse & Recycle Exchange | Built with ❤️ for a greener tomorrow</p>
-    <div class="socials">
-      <a href="#">🌍</a> <a href="#">📘</a> <a href="#">🐦</a> <a href="#">📸</a>
-    </div>
-  </footer>
-
-  <!-- CART -->
-  <div id="cartPanel">
-    <span id="cartClose">✖</span>
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <button class="donate-btn">Checkout</button>
   </div>
 
-  <!-- FLOATING CART BUTTON -->
-  <button id="cartButton">🛒</button>
+  <!-- TOAST -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
